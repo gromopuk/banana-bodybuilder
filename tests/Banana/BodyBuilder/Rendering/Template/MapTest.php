@@ -29,27 +29,85 @@ class MapTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(MapInterface::class, $map);
     }
 
-    public function testSetGetTemplatePathAndExtension()
+    public function testSetGetExtension()
     {
-        $map = new Map('/path/to/templates/', '.tpl');
+        $map = new Map('', '.tpl');
 
-        $this->assertEquals('/path/to/templates', $map->getTemplatesPath());
         $this->assertEquals('.tpl', $map->getExtension());
     }
 
-    public function testGetTemplateFilePath()
+    /**
+     * @requires OS Linux
+     */
+    public function testSetGetTemplatePathLinux()
+    {
+        $map1 = new Map('/path/to/templates', '');
+        $map2 = new Map('/path/to/templates/', '');
+        $map3 = new Map('\path\to\templates', '');
+        $map4 = new Map('\path\to\templates\\', '');
+        $expected = '/path/to/templates/';
+
+        $this->assertEquals($expected, $map1->getTemplatesPath());
+        $this->assertEquals($expected, $map2->getTemplatesPath());
+        $this->assertEquals($expected, $map3->getTemplatesPath());
+        $this->assertEquals($expected, $map4->getTemplatesPath());
+    }
+
+    /**
+     * @requires OS WIN32|WINNT
+     */
+    public function testSetGetTemplatePathWin()
+    {
+        $map1 = new Map('/path/to/templates', '');
+        $map2 = new Map('/path/to/templates/', '');
+        $map3 = new Map('\path\to\templates', '');
+        $map4 = new Map('\path\to\templates\\', '');
+        $expected = '\path\to\templates\\';
+
+        $this->assertEquals($expected, $map1->getTemplatesPath());
+        $this->assertEquals($expected, $map2->getTemplatesPath());
+        $this->assertEquals($expected, $map3->getTemplatesPath());
+        $this->assertEquals($expected, $map4->getTemplatesPath());
+    }
+
+    /**
+     * @requires OS Linux
+     */
+    public function testGetTemplateFilePathLinux()
     {
         $templatePath = '/path/to/templates/';
         $extension = '.tpl';
         $map = new Map($templatePath, $extension);
+        $equiv = '\path\to\templates\some\template.tpl';
+        $equiv_small = '\path\to\templates\template.tpl';
 
-        $this->assertEquals('/path/to/templates/some/template.tpl', $map->getTemplateFilePath('/some/template'));
-        $this->assertEquals('/path/to/templates/some/template.tpl', $map->getTemplateFilePath('\some\template'));
-        $this->assertEquals('/path/to/templates/some/template.tpl', $map->getTemplateFilePath('some/template'));
-        $this->assertEquals('/path/to/templates/some/template.tpl', $map->getTemplateFilePath('some\template'));
-        $this->assertEquals('/path/to/templates/template.tpl', $map->getTemplateFilePath('\template'));
-        $this->assertEquals('/path/to/templates/template.tpl', $map->getTemplateFilePath('/template'));
-        $this->assertEquals('/path/to/templates/template.tpl', $map->getTemplateFilePath('template'));
+        $this->assertEquals($equiv, $map->getTemplateFilePath('/some/template'));
+        $this->assertEquals($equiv, $map->getTemplateFilePath('\some\template'));
+        $this->assertEquals($equiv, $map->getTemplateFilePath('some/template'));
+        $this->assertEquals($equiv, $map->getTemplateFilePath('some\template'));
+        $this->assertEquals($equiv_small, $map->getTemplateFilePath('\template'));
+        $this->assertEquals($equiv_small, $map->getTemplateFilePath('/template'));
+        $this->assertEquals($equiv_small, $map->getTemplateFilePath('template'));
+    }
+
+    /**
+     * @requires OS WIN32|WINNT
+     */
+    public function testGetTemplateFilePathWin()
+    {
+        $templatePath = '\path\to\templates/';
+        $extension = '.tpl';
+        $map = new Map($templatePath, $extension);
+        $equiv = '\path\to\templates\some\template.tpl';
+        $equiv_small = '\path\to\templates\template.tpl';
+
+        $this->assertEquals($equiv, $map->getTemplateFilePath('/some/template'));
+        $this->assertEquals($equiv, $map->getTemplateFilePath('\some\template'));
+        $this->assertEquals($equiv, $map->getTemplateFilePath('some/template'));
+        $this->assertEquals($equiv, $map->getTemplateFilePath('some\template'));
+        $this->assertEquals($equiv_small, $map->getTemplateFilePath('\template'));
+        $this->assertEquals($equiv_small, $map->getTemplateFilePath('/template'));
+        $this->assertEquals($equiv_small, $map->getTemplateFilePath('template'));
     }
 
 }

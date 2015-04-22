@@ -37,7 +37,7 @@ class BodyBuilderTest extends \PHPUnit_Framework_TestCase
     public function testIfRenderingEngineNotInstalledException()
     {
         $this->setExpectedException(\RuntimeException::class);
-        (new BodyBuilder())->build(new Widget());
+        (new BodyBuilder())->build(new TestWidget());
     }
 
     public function testAssertRenderingEngineNotInstalledException()
@@ -57,7 +57,9 @@ class BodyBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $bb = new BodyBuilder();
         $bb->setRenderingEngine(new BodyBuilder\Rendering\Engine\Native(new TemplateMap("/")));
+        ob_start();
         $bb->build(new TestWidget());
+        ob_end_clean();
     }
 
 }

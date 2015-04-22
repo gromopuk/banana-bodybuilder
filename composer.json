@@ -1,6 +1,6 @@
 {
     "name": "banana/bodybuilder",
-    "description": "Banana Invasion Framework components",
+    "description": "Banana BodyBuilder package",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -14,11 +14,9 @@
         "commerceguys/enum": "1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.*",
-        "phpdocumentor/phpdocumentor": "2.*",
-        "halleck45/phpmetrics": "1.*"
+        "phpunit/phpunit": "4.*"
     },
     "autoload": {
-        "psr-4": { "Banana": "src/" }
+        "psr-4": { "Banana\\": "src/" }
     }
 }

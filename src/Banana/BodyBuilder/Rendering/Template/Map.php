@@ -12,7 +12,6 @@
 namespace Banana\BodyBuilder\Rendering\Template;
 
 use Banana\BodyBuilder;
-use Banana\BodyBuilder\Rendering\Template\MapInterface;
 
 /**
  * Class Map
@@ -30,7 +29,7 @@ class Map implements MapInterface
 
     public function __construct($templatesPath, $extension = null)
     {
-        $this->_templatesPath = rtrim((string)$templatesPath, DIRECTORY_SEPARATOR);
+        $this->_templatesPath = rtrim($this->fixDirectorySeparator($templatesPath), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         $this->_extension = (string)$extension;
     }
 
@@ -46,8 +45,13 @@ class Map implements MapInterface
 
     public function getTemplateFilePath($templateName)
     {
-        $templateName = trim(str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $templateName), DIRECTORY_SEPARATOR);
-        return $this->getTemplatesPath() . DIRECTORY_SEPARATOR . $templateName . $this->getExtension();
+        $templateName = trim($this->fixDirectorySeparator($templateName), DIRECTORY_SEPARATOR);
+        return $this->getTemplatesPath() . $templateName . $this->getExtension();
+    }
+
+    protected function fixDirectorySeparator($path)
+    {
+        return str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $path);
     }
 
 }

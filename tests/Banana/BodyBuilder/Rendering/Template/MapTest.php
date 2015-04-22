@@ -78,8 +78,8 @@ class MapTest extends \PHPUnit_Framework_TestCase
         $templatePath = '/path/to/templates/';
         $extension = '.tpl';
         $map = new Map($templatePath, $extension);
-        $equiv = '\path\to\templates\some\template.tpl';
-        $equiv_small = '\path\to\templates\template.tpl';
+        $equiv = '/path/to/templates/some/template.tpl';
+        $equiv_small = '/path/to/templates/template.tpl';
 
         $this->assertEquals($equiv, $map->getTemplateFilePath('/some/template'));
         $this->assertEquals($equiv, $map->getTemplateFilePath('\some\template'));

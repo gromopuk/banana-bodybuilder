@@ -60,7 +60,7 @@ abstract class WidgetsGroup extends Widget
      */
     public function buildLayout()
     {
-        $layout =  parent::buildLayout();
+        $layout = parent::buildLayout();
         foreach ($this->getWidgets() as $position => $widget) {
             $layout->includeLayout($position, $widget->buildLayout());
         }

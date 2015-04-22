@@ -57,10 +57,16 @@ abstract class Widget
 
     /**
      * @return Widget\Layout
+     *
+     * @throws \RuntimeException If no template file or template string specified as widget template
+     * @throws \UnexpectedValueException If method self::createLayout() not returns instance of Banana\BodyBuilder\Widget\Layout
      */
     public function buildLayout()
     {
         $layout = $this->createLayout();
+        if (!$layout instanceof Widget\Layout) {
+            throw new \UnexpectedValueException('Method ' . get_class($this) . '::createLayout() must return instance of Banana\BodyBuilder\Widget\Layout');
+        }
         $this->build($layout->getBlock());
         return $layout;
     }
@@ -74,15 +80,33 @@ abstract class Widget
 
     /**
      * @return Widget\Layout
+     *
+     * @throws \RuntimeException If no template file or template string specified as widget template
      */
     protected function createLayout()
     {
-        $templateName = $this->getTemplateFile();
-        if ($templateName) {
-            return Widget\Layout::createFromFile($templateName);
-        } else {
+        if ($this->hasTemplateFile()) {
+            return Widget\Layout::createFromFile($this->getTemplateFile());
+        } else if ($this->hasTemplateString()) {
             return Widget\Layout::createFromString($this->getTemplateString());
+        } else {
+            throw new \RuntimeException("Widget has no template file or template string to be used");
         }
     }
 
+    /**
+     * @return bool
+     */
+    public function hasTemplateFile()
+    {
+        return (bool)$this->getTemplateFile();
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasTemplateString()
+    {
+        return (bool)$this->hasTemplateString();
+    }
 }

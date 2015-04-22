@@ -20,7 +20,7 @@ namespace Banana\BodyBuilder;
  * @package Banana\BodyBuilder
  * @author  Vasily Oksak <voksak@gmail.com>
  */
-class Widget
+abstract class Widget
 {
 
     /**
@@ -70,9 +70,7 @@ class Widget
      *
      * @return void
      */
-    public function build(Widget\Block $block)
-    {
-    }
+    abstract public function build(Widget\Block $block);
 
     /**
      * @return Widget\Layout

@@ -55,7 +55,7 @@ class WidgetTest extends \PHPUnit_Framework_TestCase
 
     public function testGetContext()
     {
-        $widget = new Widget();
+        $widget = new \TestWidget();
         $context = $widget->getContext();
 
         $this->assertNotNull($context);
@@ -82,6 +82,15 @@ class TemplateWidget extends Widget
     {
         return 'template.tpl';
     }
+
+    /**
+     * @param Widget\Block $block
+     *
+     * @return void
+     */
+    public function build(Widget\Block $block)
+    {
+    }
 }
 class TemplateAndStringWidget extends Widget
 {
@@ -92,5 +101,14 @@ class TemplateAndStringWidget extends Widget
     public function getTemplateString()
     {
         return "Template";
+    }
+
+    /**
+     * @param Widget\Block $block
+     *
+     * @return void
+     */
+    public function build(Widget\Block $block)
+    {
     }
 }

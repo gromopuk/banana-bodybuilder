@@ -19,7 +19,7 @@ namespace Banana\BodyBuilder;
  * @package Banana\BodyBuilder
  * @author  Vasily Oksak <voksak@gmail.com>
  */
-class WidgetsGroup extends Widget
+abstract class WidgetsGroup extends Widget
 {
 
     /** @var Widget[] */

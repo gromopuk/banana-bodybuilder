@@ -107,6 +107,6 @@ abstract class Widget
      */
     public function hasTemplateString()
     {
-        return (bool)$this->hasTemplateString();
+        return (bool)$this->getTemplateString();
     }
 }

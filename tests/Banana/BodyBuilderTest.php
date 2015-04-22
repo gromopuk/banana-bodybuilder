@@ -11,6 +11,9 @@
 
 namespace Banana;
 
+use Banana\BodyBuilder\Rendering\EngineInterface;
+use Banana\BodyBuilder\Rendering\LayoutInterface;
+use Banana\BodyBuilder\Rendering\Template;
 use Banana\BodyBuilder\Rendering\Template\Map as TemplateMap;
 use Banana\BodyBuilder\Widget;
 
@@ -27,7 +30,7 @@ class BodyBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testSetGetRenderingEngine()
     {
-        $renderer = new BodyBuilder\Rendering\Engine\Native(new TemplateMap("/"));
+        $renderer = new TestRenderingEngine(new TemplateMap("/"));
         $bb = new BodyBuilder();
         $bb->setRenderingEngine($renderer);
 
@@ -49,18 +52,51 @@ class BodyBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAssertRenderingEngineNotInstalledNoException()
     {
         $bb = new BodyBuilder();
-        $bb->setRenderingEngine(new BodyBuilder\Rendering\Engine\Native(new TemplateMap("/")));
+        $bb->setRenderingEngine(new TestRenderingEngine(new TemplateMap("/")));
         $bb->assertRenderingEngineInstalled();
     }
 
     public function testBuild()
     {
         $bb = new BodyBuilder();
-        $bb->setRenderingEngine(new BodyBuilder\Rendering\Engine\Native(new TemplateMap("/")));
+        $bb->setRenderingEngine(new TestRenderingEngine(new TemplateMap("/")));
         ob_start();
         $bb->build(new \TestWidget());
         ob_end_clean();
     }
 
+}
+
+class TestRenderingEngine implements EngineInterface
+{
+
+    const RESULT = 'Test rendering engine result';
+
+    /**
+     * @param \Banana\BodyBuilder\Rendering\Template\MapInterface $templateMap
+     */
+    public function __construct(Template\MapInterface $templateMap)
+    {
+    }
+
+    /**
+     * @param LayoutInterface $layout
+     *
+     * @return void
+     */
+    public function render(LayoutInterface $layout)
+    {
+        echo self::RESULT;
+    }
+
+    /**
+     * @param LayoutInterface $layout
+     *
+     * @return string
+     */
+    public function fetch(LayoutInterface $layout)
+    {
+        return self::RESULT;
+    }
 }
 

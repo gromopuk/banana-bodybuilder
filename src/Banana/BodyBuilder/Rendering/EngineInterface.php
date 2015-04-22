@@ -11,10 +11,13 @@
 
 namespace Banana\BodyBuilder\Rendering;
 
-use Banana\BodyBuilder\Rendering\LayoutInterface;
-
 interface EngineInterface
 {
+
+    /**
+     * @param \Banana\BodyBuilder\Rendering\Template\MapInterface $templateMap
+     */
+    public function __construct(Template\MapInterface $templateMap);
 
     /**
      * @param LayoutInterface $layout

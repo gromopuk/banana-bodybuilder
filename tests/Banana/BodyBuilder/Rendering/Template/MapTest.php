@@ -78,6 +78,7 @@ class MapTest extends \PHPUnit_Framework_TestCase
         $templatePath = '/path/to/templates/';
         $extension = '.tpl';
         $map = new Map($templatePath, $extension);
+        $map->setCheckTemplateFilesExists(false);
         $equiv = '/path/to/templates/some/template.tpl';
         $equiv_small = '/path/to/templates/template.tpl';
 
@@ -98,6 +99,7 @@ class MapTest extends \PHPUnit_Framework_TestCase
         $templatePath = '\path\to\templates/';
         $extension = '.tpl';
         $map = new Map($templatePath, $extension);
+        $map->setCheckTemplateFilesExists(false);
         $equiv = '\path\to\templates\some\template.tpl';
         $equiv_small = '\path\to\templates\template.tpl';
 
@@ -108,6 +110,64 @@ class MapTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($equiv_small, $map->getTemplateFilePath('\template'));
         $this->assertEquals($equiv_small, $map->getTemplateFilePath('/template'));
         $this->assertEquals($equiv_small, $map->getTemplateFilePath('template'));
+    }
+
+    public function testSetCheckTemplateFilesExists()
+    {
+        $map = new Map('/path/','.tpl');
+
+        $this->assertTrue($map->isCheckTemplateFilesExists(), 'Map::isCheckTemplateFilesExists() must return true by default');
+
+        $map->setCheckTemplateFilesExists(false);
+
+        $this->assertFalse($map->isCheckTemplateFilesExists());
+
+        $map->setCheckTemplateFilesExists(null);
+
+        $this->assertFalse($map->isCheckTemplateFilesExists());
+
+        $map->setCheckTemplateFilesExists(0);
+
+        $this->assertFalse($map->isCheckTemplateFilesExists());
+
+        $map->setCheckTemplateFilesExists(true);
+
+        $this->assertTrue($map->isCheckTemplateFilesExists());
+
+        $map->setCheckTemplateFilesExists('true');
+
+        $this->assertTrue($map->isCheckTemplateFilesExists());
+
+        $map->setCheckTemplateFilesExists('false');
+
+        $this->assertTrue($map->isCheckTemplateFilesExists());
+
+        $map->setCheckTemplateFilesExists(1);
+
+        $this->assertTrue($map->isCheckTemplateFilesExists());
+    }
+
+    public function testGetTemplateFilePathNotExistingFileThrowsException()
+    {
+        $map = new Map('/not/existing/path', '.tpl');
+        $map->setCheckTemplateFilesExists(true);
+
+        $this->setExpectedException(\RuntimeException::class);
+        $map->getTemplateFilePath('not_existing_tpl');
+    }
+
+    public function testGetTemplateFilePathNotExistingFileNotThrowsException()
+    {
+        $map = new Map('/not/existing/path', '.tpl');
+        $map->setCheckTemplateFilesExists(false);
+        $this->assertTrue(is_string($map->getTemplateFilePath('not_existing_tpl')));
+    }
+
+    public function testGetTemplateFilePathExistingFileNotThrowsException()
+    {
+        $map = new Map(BANANA_BODYBUILDER_TEST_TEMPLATES_PATH, '.tpl');
+        $map->setCheckTemplateFilesExists(true);
+        $this->assertTrue(is_string($map->getTemplateFilePath('test')));
     }
 
 }

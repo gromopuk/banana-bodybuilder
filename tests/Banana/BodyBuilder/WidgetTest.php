@@ -24,22 +24,22 @@ class WidgetTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildLayoutFromString()
     {
-        $this->assertEquals(Rendering\Template\Type::STRING, (new StringWidget())->buildLayout()->getTemplateType());
+        $this->assertEquals(Rendering\Template\Type::STRING, (new StringWidget())->getLayout()->getTemplateType());
     }
 
     public function testBuildLayoutFromFile()
     {
-        $this->assertEquals(Rendering\Template\Type::FILE,  (new TemplateWidget())->buildLayout()->getTemplateType());
+        $this->assertEquals(Rendering\Template\Type::FILE,  (new TemplateWidget())->getLayout()->getTemplateType());
     }
 
     public function testBuildLayoutFromFileInsteadString()
     {
-        $this->assertEquals(Rendering\Template\Type::FILE,  (new TemplateAndStringWidget())->buildLayout()->getTemplateType());
+        $this->assertEquals(Rendering\Template\Type::FILE,  (new TemplateAndStringWidget())->getLayout()->getTemplateType());
     }
 
     public function testBuildMethodCalled()
     {
-        $layout = (new StringWidget())->buildLayout();
+        $layout = (new StringWidget())->getLayout();
 
         $this->assertTrue($layout->getBlock()->hasVariable('test_from_build'));
         $this->assertEquals('this value set in build method', $layout->getBlock()->getVariable('test_from_build'));
@@ -63,6 +63,14 @@ class WidgetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($context, $widget->getContext());
     }
 
+    public function testCreateLayoutNoTemplateException()
+    {
+        $wg = new ErrorWidget();
+
+        $this->setExpectedException(\RuntimeException::class);
+        $wg->getLayout();
+    }
+
 }
 
 class StringWidget extends Widget
@@ -71,7 +79,7 @@ class StringWidget extends Widget
     {
         return "Template";
     }
-    public function build(Widget\Block $block)
+    protected function buildBlock(Widget\Block $block)
     {
         $block->setVariable('test_from_build', 'this value set in build method');
     }
@@ -88,7 +96,7 @@ class TemplateWidget extends Widget
      *
      * @return void
      */
-    public function build(Widget\Block $block)
+    protected function buildBlock(Widget\Block $block)
     {
     }
 }
@@ -108,7 +116,19 @@ class TemplateAndStringWidget extends Widget
      *
      * @return void
      */
-    public function build(Widget\Block $block)
+    protected function buildBlock(Widget\Block $block)
+    {
+    }
+}
+class ErrorWidget extends Widget
+{
+
+    /**
+     * @param Widget\Block $block
+     *
+     * @return void
+     */
+    protected function buildBlock(Widget\Block $block)
     {
     }
 }

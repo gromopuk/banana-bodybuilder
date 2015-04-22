@@ -61,10 +61,10 @@ class WidgetsGroupTest extends \PHPUnit_Framework_TestCase
         $widget = new \TestWidget();
         $widgets->setWidget('test', $widget);
 
-        $layout = $widgets->buildLayout();
+        $layout = $widgets->getLayout();
 
         $this->assertArrayHasKey('test', $layout->getIncludedLayouts());
-        $this->assertEquals($widget->buildLayout(), $layout->getIncludedLayouts()['test']);
+        $this->assertEquals($widget->getLayout(), $layout->getIncludedLayouts()['test']);
     }
 
 }

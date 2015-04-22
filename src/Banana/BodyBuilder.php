@@ -60,7 +60,7 @@ class BodyBuilder
     public function build(Widget $widget)
     {
         $this->assertRenderingEngineInstalled();
-        $this->getRenderingEngine()->render($widget->buildLayout());
+        $this->getRenderingEngine()->render($widget->getLayout());
     }
 
     /**

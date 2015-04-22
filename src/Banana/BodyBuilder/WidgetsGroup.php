@@ -56,15 +56,15 @@ abstract class WidgetsGroup extends Widget
     }
 
     /**
-     * @inheritdoc
+     * @param Widget\Layout $layout
+     *
+     * @return void
      */
-    public function buildLayout()
+    protected function buildLayout(Widget\Layout $layout)
     {
-        $layout = parent::buildLayout();
+        parent::buildLayout($layout);
         foreach ($this->getWidgets() as $position => $widget) {
-            $layout->includeLayout($position, $widget->buildLayout());
+            $layout->includeLayout($position, $widget->getLayout());
         }
-        return $layout;
     }
-
 }

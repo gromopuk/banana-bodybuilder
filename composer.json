@@ -1,0 +1,24 @@
+{
+    "name": "banana/bodybuilder",
+    "description": "Banana Invasion Framework components",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vasily Oksak",
+            "email": "voksak@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5",
+        "commerceguys/enum": "1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.*",
+        "phpdocumentor/phpdocumentor": "2.*",
+        "halleck45/phpmetrics": "1.*"
+    },
+    "autoload": {
+        "psr-4": { "Banana": "src/" }
+    }
+}

@@ -1,0 +1,7 @@
+default:
+  path:
+    directory: src
+    extensions: php
+  logging:
+    report:
+      html: ./log/report/metrics/phpmetrics.html

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <title>BananaInvasion Libraries</title>
+    <parser>
+        <target>doc/build</target>
+        <encoding>utf8</encoding>
+        <extensions>
+            <extension>php</extension>
+        </extensions>
+        <markers>
+            <item>TODO</item>
+            <item>FIXME</item>
+        </markers>
+    </parser>
+    <transformer>
+        <target>doc</target>
+    </transformer>
+    <files>
+        <directory>src</directory>
+    </files>
+    <logging>
+        <level>warn</level>
+        <paths>
+            <default>/log/phpdoc/{DATE}.log</default>
+        </paths>
+    </logging>
+    <transformations>
+        <template name="responsive" />
+    </transformations>
+</phpdoc>

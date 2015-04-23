@@ -48,7 +48,7 @@ class Assets
 
     public function addStyleSheetElement(Elements\ElementInterface $element)
     {
-        $this->styleSheetElements = $element;
+        $this->styleSheetElements[] = $element;
         return $this;
     }
 

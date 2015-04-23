@@ -8,13 +8,6 @@ php:
 
 before_script:
   - composer install --no-dev
-  - sudo su
-  - wget http://alexeyrybak.com/blitz/all-releases/blitz-0.8.17.tar.gz
-  - tar zxvf blitz-0.8.17.tar.gz
-  - cd blitz-0.8.17
-  - phpize
-  - ./configure
-  - make install
 
 script: phpunit --coverage-clover=coverage.clover
 

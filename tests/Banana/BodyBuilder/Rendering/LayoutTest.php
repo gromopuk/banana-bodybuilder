@@ -9,15 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Banana\BodyBuilder\Widget;
+namespace Banana\BodyBuilder\Rendering;
 
 use Banana\BodyBuilder\Rendering\Template\Type as TemplateType;
-use Banana\BodyBuilder\Rendering\LayoutInterface;
 
 /**
  * Class LayoutTest
  *
- * Tests for class Banana\BodyBuilder\Widget\Layout
+ * Tests for class Banana\BodyBuilder\Rendering\Layout
  *
  * @package Banana\BodyBuilder\Widget
  * @author  Vasily Oksak <voksak@gmail.com>

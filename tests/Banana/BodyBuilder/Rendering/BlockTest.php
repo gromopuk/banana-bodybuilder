@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Banana\BodyBuilder\Widget;
+namespace Banana\BodyBuilder\Rendering;
 
 /**
  * Class BlockTest
  *
- * Tests for class Banana\BodyBuilder\Widget\Block
+ * Tests for class Banana\BodyBuilder\Rendering\Block
  *
- * @package Banana\BodyBuilder\Widget\Layout
+ * @package Banana\BodyBuilder\Rendering\Layout
  * @author  Vasily Oksak <voksak@gmail.com>
  */
 class BlockTest extends \PHPUnit_Framework_TestCase

@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Banana\BodyBuilder\Widget;
+namespace Banana\BodyBuilder\Rendering;
 
 /**
  * Class Block
  *
  * @todo    Add class description
  *
- * @package Banana\BodyBuilder\Widget\Layout
+ * @package Banana\BodyBuilder\Rendering\Layout
  * @author  Vasily Oksak <voksak@gmail.com>
  */
 class Block
@@ -49,11 +49,10 @@ class Block
      * @param string $name
      *
      * @return bool
-     *
      */
-    public function hasVariable($name)
+    public function hasBlock($name)
     {
-        return isset($this->_variables[(string)$name]);
+        return isset($this->_blocks[(string)$name]);
     }
 
     public function getVariable($name)
@@ -65,11 +64,14 @@ class Block
     }
 
     /**
-     * @return array
+     * @param string $name
+     *
+     * @return bool
+     *
      */
-    public function getVariables()
+    public function hasVariable($name)
     {
-        return $this->_variables;
+        return isset($this->_variables[(string)$name]);
     }
 
     /**
@@ -101,16 +103,6 @@ class Block
     /**
      * @param string $name
      *
-     * @return bool
-     */
-    public function hasBlock($name)
-    {
-        return isset($this->_blocks[(string)$name]);
-    }
-
-    /**
-     * @param string $name
-     *
      * @return array
      */
     public function getBlocks($name)
@@ -121,14 +113,6 @@ class Block
         }
 
         return null;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAllBlocks()
-    {
-        return $this->_blocks;
     }
 
     /**
@@ -145,6 +129,22 @@ class Block
         }
 
         return $array;
+    }
+
+    /**
+     * @return array
+     */
+    public function getVariables()
+    {
+        return $this->_variables;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllBlocks()
+    {
+        return $this->_blocks;
     }
 
 }

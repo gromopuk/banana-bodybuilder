@@ -9,12 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Banana\BodyBuilder\Widget;
+namespace Banana\BodyBuilder\Rendering;
 
 use Banana\BodyBuilder;
-use Banana\BodyBuilder\Widget\Block;
 use Banana\BodyBuilder\Rendering\Template\Type as TemplateType;
-use Banana\BodyBuilder\Rendering\LayoutInterface;
 
 /**
  * Class Layout
@@ -37,6 +35,17 @@ class Layout implements LayoutInterface
     private $_includes = [];
 
     /**
+     * @param string $type
+     * @param string $template
+     *
+     * @throws \InvalidArgumentException If given template type is not supported
+     */
+    public function __construct($type, $template)
+    {
+        $this->setTemplate($type, $template);
+    }
+
+    /**
      * @param string $filePath
      *
      * @return Layout
@@ -57,14 +66,11 @@ class Layout implements LayoutInterface
     }
 
     /**
-     * @param string $type
-     * @param string $template
-     *
-     * @throws \InvalidArgumentException If given template type is not supported
+     * @return string
      */
-    public function __construct($type, $template)
+    public function getTemplate()
     {
-        $this->setTemplate($type, $template);
+        return $this->_template;
     }
 
     /**
@@ -90,14 +96,6 @@ class Layout implements LayoutInterface
     /**
      * @return string
      */
-    public function getTemplate()
-    {
-        return $this->_template;
-    }
-
-    /**
-     * @return string
-     */
     public function getTemplateType()
     {
         return $this->_templateType;
@@ -117,7 +115,7 @@ class Layout implements LayoutInterface
     public function getBlock()
     {
         if ($this->_block === null) {
-            $this->_block = new BodyBuilder\Widget\Block();
+            $this->_block = new BodyBuilder\Rendering\Block();
         }
         return $this->_block;
     }

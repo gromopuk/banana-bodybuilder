@@ -9,25 +9,26 @@ define('BANANA_BODYBUILDER_TEST_TEMPLATES_PATH', __DIR__);
 
 use Banana\BodyBuilder;
 
-class TestWidget extends BodyBuilder\Widget
+class TestWidgetAbstract extends BodyBuilder\WidgetAbstract
 {
     public function getTemplateString()
     {
         return 'Template string';
     }
 
-    protected function buildBlock(BodyBuilder\Widget\Block $block)
+    protected function buildBlock(BodyBuilder\Rendering\Block $block)
     {
     }
 }
 
-class TestWidgetsGroup extends BodyBuilder\WidgetsGroup
+class TestWidgetsGroupAbstract extends BodyBuilder\WidgetsGroupAbstract
 {
     public function getTemplateString()
     {
         return 'Template string';
     }
-    protected function buildBlock(\Banana\BodyBuilder\Widget\Block $block)
+
+    protected function buildBlock(BodyBuilder\Rendering\Block $block)
     {
     }
 }

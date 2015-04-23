@@ -14,7 +14,7 @@ namespace Banana\BodyBuilder;
 /**
  * Class WidgetsGroupTest
  *
- * Tests for class Banana\BodyBuilder\WidgetsGroup
+ * Tests for class Banana\BodyBuilder\WidgetsGroupAbstract
  *
  * @package Banana\BodyBuilder
  * @author  Vasily Oksak <voksak@gmail.com>
@@ -24,18 +24,18 @@ class WidgetsGroupTest extends \PHPUnit_Framework_TestCase
 
     public function testExtendsWidget()
     {
-        $this->assertInstanceOf(Widget::class, new \TestWidgetsGroup());
+        $this->assertInstanceOf(WidgetAbstract::class, new \TestWidgetsGroupAbstract());
     }
 
     public function testSetHasGetWidgets()
     {
-        $widgets = new \TestWidgetsGroup();
+        $widgets = new \TestWidgetsGroupAbstract();
 
         $this->assertFalse($widgets->hasWidget('test'));
         $this->assertNull($widgets->getWidget('test'));
         $this->assertEquals([], $widgets->getWidgets());
 
-        $widget = new \TestWidget();
+        $widget = new \TestWidgetAbstract();
         $widgets->setWidget('test', $widget);
 
         $this->assertTrue($widgets->hasWidget('test'));
@@ -47,8 +47,8 @@ class WidgetsGroupTest extends \PHPUnit_Framework_TestCase
 
     public function testSetContextAsParent()
     {
-        $widgets = new \TestWidgetsGroup();
-        $widget = new \TestWidget();
+        $widgets = new \TestWidgetsGroupAbstract();
+        $widget = new \TestWidgetAbstract();
         $widgets->setWidget('test', $widget);
 
         $this->assertNotNull($widget->getContext()->getParent());
@@ -57,8 +57,8 @@ class WidgetsGroupTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildLayout()
     {
-        $widgets = new \TestWidgetsGroup();
-        $widget = new \TestWidget();
+        $widgets = new \TestWidgetsGroupAbstract();
+        $widget = new \TestWidgetAbstract();
         $widgets->setWidget('test', $widget);
 
         $layout = $widgets->getLayout();

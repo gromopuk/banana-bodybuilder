@@ -55,7 +55,7 @@ class WidgetTest extends \PHPUnit_Framework_TestCase
 
     public function testGetContext()
     {
-        $widget = new \TestWidget();
+        $widget = new \TestWidgetAbstract();
         $context = $widget->getContext();
 
         $this->assertNotNull($context);
@@ -73,18 +73,20 @@ class WidgetTest extends \PHPUnit_Framework_TestCase
 
 }
 
-class StringWidget extends Widget
+class StringWidget extends WidgetAbstract
 {
     public function getTemplateString()
     {
         return "Template";
     }
-    protected function buildBlock(Widget\Block $block)
+
+    protected function buildBlock(Rendering\Block $block)
     {
         $block->setVariable('test_from_build', 'this value set in build method');
     }
 }
-class TemplateWidget extends Widget
+
+class TemplateWidget extends WidgetAbstract
 {
     public function getTemplateFile()
     {
@@ -92,15 +94,16 @@ class TemplateWidget extends Widget
     }
 
     /**
-     * @param Widget\Block $block
+     * @param \Banana\BodyBuilder\Rendering\Block $block
      *
      * @return void
      */
-    protected function buildBlock(Widget\Block $block)
+    protected function buildBlock(Rendering\Block $block)
     {
     }
 }
-class TemplateAndStringWidget extends Widget
+
+class TemplateAndStringWidget extends WidgetAbstract
 {
     public function getTemplateFile()
     {
@@ -112,23 +115,24 @@ class TemplateAndStringWidget extends Widget
     }
 
     /**
-     * @param Widget\Block $block
+     * @param \Banana\BodyBuilder\Rendering\Block $block
      *
      * @return void
      */
-    protected function buildBlock(Widget\Block $block)
+    protected function buildBlock(Rendering\Block $block)
     {
     }
 }
-class ErrorWidget extends Widget
+
+class ErrorWidget extends WidgetAbstract
 {
 
     /**
-     * @param Widget\Block $block
+     * @param \Banana\BodyBuilder\Rendering\Block $block
      *
      * @return void
      */
-    protected function buildBlock(Widget\Block $block)
+    protected function buildBlock(Rendering\Block $block)
     {
     }
 }

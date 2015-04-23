@@ -19,32 +19,20 @@ namespace Banana\BodyBuilder;
  * @package Banana\BodyBuilder
  * @author  Vasily Oksak <voksak@gmail.com>
  */
-abstract class WidgetsGroup extends Widget
+abstract class WidgetsGroupAbstract extends WidgetAbstract
 {
 
-    /** @var Widget[] */
+    /** @var WidgetAbstract[] */
     protected $widgets = [];
 
-    /**
-     * @return Widget[]
-     */
-    public function getWidgets()
-    {
-        return $this->widgets;
-    }
-
-    public function setWidget($position, Widget $widget)
+    public function setWidget($position, WidgetAbstract $widget)
     {
         $this->widgets[$position] = $widget;
         $widget->getContext()->setParent($this->getContext());
-        /** @todo Add assets merge */
+        $widget->mergeAssets($this->getAssets());
+        $widget->setElementsFactory($this->getElementsFactory());
 
         return $widget;
-    }
-
-    public function hasWidget($position)
-    {
-        return isset($this->widgets[$position]);
     }
 
     public function getWidget($position)
@@ -55,16 +43,29 @@ abstract class WidgetsGroup extends Widget
         return null;
     }
 
+    public function hasWidget($position)
+    {
+        return isset($this->widgets[$position]);
+    }
+
     /**
-     * @param Widget\Layout $layout
+     * @param \Banana\BodyBuilder\Rendering\Layout $layout
      *
      * @return void
      */
-    protected function buildLayout(Widget\Layout $layout)
+    protected function buildLayout(Rendering\Layout $layout)
     {
         parent::buildLayout($layout);
         foreach ($this->getWidgets() as $position => $widget) {
             $layout->includeLayout($position, $widget->getLayout());
         }
+    }
+
+    /**
+     * @return WidgetAbstract[]
+     */
+    public function getWidgets()
+    {
+        return $this->widgets;
     }
 }

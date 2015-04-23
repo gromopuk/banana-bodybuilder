@@ -15,7 +15,6 @@ use Banana\BodyBuilder\Rendering\EngineInterface;
 use Banana\BodyBuilder\Rendering\LayoutInterface;
 use Banana\BodyBuilder\Rendering\Template;
 use Banana\BodyBuilder\Rendering\Template\Map as TemplateMap;
-use Banana\BodyBuilder\Widget;
 
 /**
  * Class BodyBuilderTest
@@ -40,7 +39,7 @@ class BodyBuilderTest extends \PHPUnit_Framework_TestCase
     public function testIfRenderingEngineNotInstalledException()
     {
         $this->setExpectedException(\RuntimeException::class);
-        (new BodyBuilder())->build(new \TestWidget());
+        (new BodyBuilder())->build(new \TestWidgetAbstract());
     }
 
     public function testAssertRenderingEngineNotInstalledException()
@@ -61,7 +60,7 @@ class BodyBuilderTest extends \PHPUnit_Framework_TestCase
         $bb = new BodyBuilder();
         $bb->setRenderingEngine(new TestRenderingEngine(new TemplateMap("/")));
         ob_start();
-        $bb->build(new \TestWidget());
+        $bb->build(new \TestWidgetAbstract());
         ob_end_clean();
     }
 

@@ -11,8 +11,8 @@
 
 namespace Banana;
 
-use Banana\BodyBuilder\Widget;
 use Banana\BodyBuilder\Rendering\EngineInterface;
+use Banana\BodyBuilder\WidgetAbstract;
 
 /**
  * Class BodyBuilder
@@ -31,33 +31,13 @@ class BodyBuilder
     private $_renderingEngine;
 
     /**
-     * @param \Banana\BodyBuilder\Rendering\EngineInterface $engine
-     *
-     * @return self
-     */
-    public function setRenderingEngine(EngineInterface $engine)
-    {
-        $this->_renderingEngine = $engine;
-
-        return $this;
-    }
-
-    /**
-     * @return \Banana\BodyBuilder\Rendering\EngineInterface
-     */
-    public function getRenderingEngine()
-    {
-        return $this->_renderingEngine;
-    }
-
-    /**
-     * @param Widget $widget
+     * @param WidgetAbstract $widget
      *
      * @return void
      *
      * @throws \RuntimeException If Rendering engine instance is not installed
      */
-    public function build(Widget $widget)
+    public function build(WidgetAbstract $widget)
     {
         $this->assertRenderingEngineInstalled();
         $this->getRenderingEngine()->render($widget->getLayout());
@@ -73,5 +53,25 @@ class BodyBuilder
         if (!$this->getRenderingEngine()) {
             throw new \RuntimeException("Rendering engine is not installed");
         }
+    }
+
+    /**
+     * @return \Banana\BodyBuilder\Rendering\EngineInterface
+     */
+    public function getRenderingEngine()
+    {
+        return $this->_renderingEngine;
+    }
+
+    /**
+     * @param \Banana\BodyBuilder\Rendering\EngineInterface $engine
+     *
+     * @return self
+     */
+    public function setRenderingEngine(EngineInterface $engine)
+    {
+        $this->_renderingEngine = $engine;
+
+        return $this;
     }
 }

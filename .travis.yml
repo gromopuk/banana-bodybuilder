@@ -8,9 +8,9 @@ php:
 
 before_script:
   - composer install --no-dev
-  - wget http://alexeyrybak.com/blitz/all-releases/blitz-0.8.17.tar.gz
-  - tar zxvf blitz-0.8.17.tar.gz
-  - cd blitz-0.8.17
+  - sudo wget http://alexeyrybak.com/blitz/all-releases/blitz-0.8.17.tar.gz
+  - sudo tar zxvf blitz-0.8.17.tar.gz
+  - sudo cd blitz-0.8.17
   - sudo phpize
   - sudo ./configure
   - sudo make install

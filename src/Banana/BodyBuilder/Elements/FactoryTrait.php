@@ -11,7 +11,6 @@
 
 namespace Banana\BodyBuilder\Elements;
 
-
 trait FactoryTrait
 {
 

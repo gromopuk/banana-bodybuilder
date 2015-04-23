@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Banana\BodyBuilder\Elements\Head;
+namespace Banana\BodyBuilder\Elements\Element\Head;
 
 
 use Banana\BodyBuilder\Elements\ElementAbstract;
@@ -30,7 +30,7 @@ class Link extends ElementAbstract
 
     public static function getElementTemplate()
     {
-        return '<link ' . self::ATTRIBUTES_MARKER . '>';
+        return '<link ' . self::MARKER_ATTRIBUTES . '>';
     }
 
 }

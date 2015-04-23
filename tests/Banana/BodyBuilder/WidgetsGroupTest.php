@@ -36,7 +36,7 @@ class WidgetsGroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([], $widgets->getWidgets());
 
         $widget = new \TestWidgetAbstract();
-        $widgets->setWidget('test', $widget);
+        $widgets->addWidget('test', $widget);
 
         $this->assertTrue($widgets->hasWidget('test'));
         $this->assertNotNull($widgets->getWidget('test'));
@@ -49,7 +49,7 @@ class WidgetsGroupTest extends \PHPUnit_Framework_TestCase
     {
         $widgets = new \TestWidgetsGroupAbstract();
         $widget = new \TestWidgetAbstract();
-        $widgets->setWidget('test', $widget);
+        $widgets->addWidget('test', $widget);
 
         $this->assertNotNull($widget->getContext()->getParent());
         $this->assertEquals($widgets->getContext(), $widget->getContext()->getParent());
@@ -59,7 +59,7 @@ class WidgetsGroupTest extends \PHPUnit_Framework_TestCase
     {
         $widgets = new \TestWidgetsGroupAbstract();
         $widget = new \TestWidgetAbstract();
-        $widgets->setWidget('test', $widget);
+        $widgets->addWidget('test', $widget);
 
         $layout = $widgets->getLayout();
 

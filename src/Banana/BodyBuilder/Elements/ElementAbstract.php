@@ -14,23 +14,18 @@ namespace Banana\BodyBuilder\Elements;
 abstract class ElementAbstract implements ElementInterface
 {
 
-    const ATTRIBUTES_MARKER = '@attributes';
-    const CONTENT_MARKER = '@content';
+    const MARKER_ATTRIBUTES = '@attributes';
+    const MARKER_CONTENT = '@content';
 
     protected $attributes = [];
     protected $content = '';
-
-    public function init(array $attributes, $content = null)
-    {
-        $this->setAttributes($attributes);
-        $this->setContent($content);
-    }
 
     public function setAttribute($name, $value)
     {
         $name = (string)$name;
         $this->assertElementAttributesExists([$name => $value]);
         $this->attributes[$name] = $value;
+        return $this;
     }
 
     /**
@@ -43,7 +38,7 @@ abstract class ElementAbstract implements ElementInterface
     protected function assertElementAttributesExists(array $attributes)
     {
         $wrongAttributes = array_diff($attributes, array_flip(static::getElementAttributes()));
-        if ($wrongAttributes) {
+        if (!empty($wrongAttributes)) {
             throw new \InvalidArgumentException('Element ' . get_class($this) . ' is not supporting attributes: ' . implode(', ',
                     $wrongAttributes));
         }
@@ -76,11 +71,12 @@ abstract class ElementAbstract implements ElementInterface
     {
         $this->assertElementAttributesExists($attributes);
         $this->attributes = array_merge($this->attributes, $attributes);
+        return $this;
     }
 
     public function toString()
     {
-        $search = [static::ATTRIBUTES_MARKER, static::CONTENT_MARKER];
+        $search = [static::MARKER_ATTRIBUTES, static::MARKER_CONTENT];
         $replace = [$this->getAttributesAsString(), $this->getContent()];
         return str_replace($search, $replace, static::getElementTemplate());
     }
@@ -107,6 +103,7 @@ abstract class ElementAbstract implements ElementInterface
     public function setContent($content)
     {
         $this->content = (string)$content;
+        return $this;
     }
 
     public static function getElementTemplate()

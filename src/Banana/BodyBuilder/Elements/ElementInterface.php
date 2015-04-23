@@ -14,8 +14,9 @@ namespace Banana\BodyBuilder\Elements;
 interface ElementInterface
 {
 
-    public function init(array $attributes);
+    public function setAttributes(array $attributes);
 
+    public function setContent($content);
     public function toString();
 
 }

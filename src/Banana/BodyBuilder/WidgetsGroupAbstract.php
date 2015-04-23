@@ -25,14 +25,14 @@ abstract class WidgetsGroupAbstract extends WidgetAbstract
     /** @var WidgetAbstract[] */
     protected $widgets = [];
 
-    public function setWidget($position, WidgetAbstract $widget)
+    public function addWidget($position, WidgetAbstract $widget)
     {
         $this->widgets[$position] = $widget;
         $widget->getContext()->setParent($this->getContext());
         $widget->mergeAssets($this->getAssets());
         $widget->setElementsFactory($this->getElementsFactory());
 
-        return $widget;
+        return $this;
     }
 
     public function getWidget($position)
@@ -68,4 +68,5 @@ abstract class WidgetsGroupAbstract extends WidgetAbstract
     {
         return $this->widgets;
     }
+
 }

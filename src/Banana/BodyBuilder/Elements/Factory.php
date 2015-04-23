@@ -11,12 +11,15 @@
 
 namespace Banana\BodyBuilder\Elements;
 
+
 class Factory implements FactoryInterface
 {
 
     protected $classes = [
-        Type::LINK   => Head\Link::class,
-        Type::SCRIPT => Script::class,
+        Type::LINK   => Element\Head\Link::class,
+        Type::META   => Element\Head\Meta::class,
+        Type::TITLE  => Element\Head\Title::class,
+        Type::SCRIPT => Element\Script::class,
     ];
 
     /**
@@ -32,7 +35,8 @@ class Factory implements FactoryInterface
         $className = $this->getElementClass($type);
         /** @var ElementInterface $element */
         $element = new $className();
-        $element->init($attributes, $content);
+        $element->setAttributes($attributes);
+        $element->setContent($content);
 
         return $element;
     }
@@ -61,11 +65,12 @@ class Factory implements FactoryInterface
     {
         $this->assertElementClassCorrect($class);
         $this->classes[$type] = $class;
+        return $this;
     }
 
     protected function assertElementClassCorrect($class)
     {
-        if (false) {
+        if (in_array(ElementInterface::class, class_implements($class))) {
             throw new \InvalidArgumentException("Element class `$class` must implements " . ElementInterface::class);
         }
     }

@@ -9,8 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Banana\BodyBuilder\Elements;
+namespace Banana\BodyBuilder\Elements\Element;
 
+
+use Banana\BodyBuilder\Elements\ElementAbstract;
 
 class Script extends ElementAbstract
 {
@@ -28,7 +30,7 @@ class Script extends ElementAbstract
 
     public static function getElementTemplate()
     {
-        return '<script ' . self::ATTRIBUTES_MARKER . '>' . self::CONTENT_MARKER . '</script>';
+        return '<script ' . self::MARKER_ATTRIBUTES . '>' . self::MARKER_CONTENT . '</script>';
     }
 
 }

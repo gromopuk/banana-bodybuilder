@@ -18,5 +18,7 @@ class Type extends AbstractEnum
 
     const LINK = 'link';
     const SCRIPT = 'script';
+    const TITLE = 'title';
+    const META = 'meta';
 
 }

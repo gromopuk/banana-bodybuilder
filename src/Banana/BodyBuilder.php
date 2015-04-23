@@ -28,7 +28,7 @@ class BodyBuilder
     /**
      * @var \Banana\BodyBuilder\Rendering\EngineInterface|null
      */
-    private $_renderingEngine;
+    protected $renderingEngine;
 
     /**
      * @param WidgetAbstract $widget
@@ -60,7 +60,7 @@ class BodyBuilder
      */
     public function getRenderingEngine()
     {
-        return $this->_renderingEngine;
+        return $this->renderingEngine;
     }
 
     /**
@@ -70,8 +70,7 @@ class BodyBuilder
      */
     public function setRenderingEngine(EngineInterface $engine)
     {
-        $this->_renderingEngine = $engine;
-
+        $this->renderingEngine = $engine;
         return $this;
     }
 }

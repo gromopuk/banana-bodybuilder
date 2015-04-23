@@ -20,6 +20,7 @@ use Banana\BodyBuilder\Elements;
  * @todo    Add tests
  * @todo    Add priority argument support for ss and js
  * @todo    Check is ss or js already added
+ * @todo    Add support of if statements
  *
  * @package BodyBuilder\Widget
  * @author  Vasily Oksak <voksak@gmail.com>
@@ -42,23 +43,25 @@ class Assets
 
     public function addStyleSheet(array $attributes = [])
     {
-        $this->addStyleSheetElement($this->createElement(Elements\Type::LINK, $attributes));
+        return $this->addStyleSheetElement($this->createElement(Elements\Type::LINK, $attributes));
     }
 
     public function addStyleSheetElement(Elements\ElementInterface $element)
     {
         $this->styleSheetElements = $element;
+        return $this;
     }
 
     public function addScript($position, array $attributes = [], $content = '')
     {
-        $this->addScriptElement($position, $this->createElement(Elements\Type::SCRIPT, $attributes, $content));
+        return $this->addScriptElement($position, $this->createElement(Elements\Type::SCRIPT, $attributes, $content));
     }
 
     public function addScriptElement($position, Elements\ElementInterface $element)
     {
         $this->assertScriptPositionExists($position);
         $this->scriptElements[$position][] = $element;
+        return $this;
     }
 
     protected function assertScriptPositionExists($position)

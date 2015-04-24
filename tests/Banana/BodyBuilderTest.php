@@ -14,6 +14,7 @@ namespace Banana;
 use Banana\BodyBuilder\Rendering\EngineInterface;
 use Banana\BodyBuilder\Rendering\LayoutInterface;
 use Banana\BodyBuilder\Rendering\Template;
+use Banana\BodyBuilder\Rendering\Template\FormatterInterface;
 use Banana\BodyBuilder\Rendering\Template\Map as TemplateMap;
 
 /**
@@ -96,6 +97,14 @@ class TestRenderingEngine implements EngineInterface
     public function fetch(LayoutInterface $layout)
     {
         return self::RESULT;
+    }
+
+    /**
+     * @return FormatterInterface
+     */
+    public function getStringTemplateFormatter()
+    {
+        // TODO: Implement getStringTemplateFormatter() method.
     }
 }
 

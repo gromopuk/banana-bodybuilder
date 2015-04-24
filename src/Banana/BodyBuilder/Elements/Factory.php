@@ -15,6 +15,9 @@ namespace Banana\BodyBuilder\Elements;
 class Factory implements FactoryInterface
 {
 
+    /**
+     * @var array
+     */
     protected $classes = [
         Type::LINK   => Element\Head\Link::class,
         Type::META   => Element\Head\Meta::class,
@@ -41,6 +44,13 @@ class Factory implements FactoryInterface
         return $element;
     }
 
+    /**
+     * @param string $type
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     */
     protected function assertElementClassExists($type)
     {
         if (!$this->hasElementClass($type)) {
@@ -48,11 +58,21 @@ class Factory implements FactoryInterface
         }
     }
 
+    /**
+     * @param string $type
+     *
+     * @return bool
+     */
     public function hasElementClass($type)
     {
         return isset($this->classes[$type]);
     }
 
+    /**
+     * @param string $type
+     *
+     * @return null|string
+     */
     public function getElementClass($type)
     {
         if ($this->hasElementClass($type)) {
@@ -61,6 +81,12 @@ class Factory implements FactoryInterface
         return null;
     }
 
+    /**
+     * @param string $type
+     * @param string $class
+     *
+     * @return $this
+     */
     public function setElementClass($type, $class)
     {
         $this->assertElementClassCorrect($class);
@@ -68,10 +94,18 @@ class Factory implements FactoryInterface
         return $this;
     }
 
+    /**
+     * @param string $class
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     */
     protected function assertElementClassCorrect($class)
     {
         if (in_array(ElementInterface::class, class_implements($class))) {
             throw new \InvalidArgumentException('Element ' . $class . ' must implements ' . ElementInterface::class);
         }
     }
+
 }

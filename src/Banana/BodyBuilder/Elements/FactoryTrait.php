@@ -11,16 +11,38 @@
 
 namespace Banana\BodyBuilder\Elements;
 
+/**
+ * Trait FactoryTrait
+ *
+ * @todo    Add class description
+ * @todo    Add tests
+ *
+ * @package Banana\BodyBuilder\Elements
+ * @author  Vasily Oksak <voksak@gmail.com>
+ */
 trait FactoryTrait
 {
 
+    /**
+     * @var FactoryInterface
+     */
     protected $elementsFactory;
 
+    /**
+     * @param string $type
+     * @param array  $attributes
+     * @param string $content
+     *
+     * @return ElementInterface
+     */
     public function createElement($type, array $attributes = [], $content = '')
     {
         return $this->getElementsFactory()->createElement($type, $attributes, $content);
     }
 
+    /**
+     * @return FactoryInterface
+     */
     public function getElementsFactory()
     {
         if ($this->elementsFactory === null) {
@@ -29,9 +51,15 @@ trait FactoryTrait
         return $this->elementsFactory;
     }
 
+    /**
+     * @param FactoryInterface $factory
+     *
+     * @return $this
+     */
     public function setElementsFactory(FactoryInterface $factory)
     {
         $this->elementsFactory = $factory;
+        return $this;
     }
 
 }

@@ -11,12 +11,32 @@
 
 namespace Banana\BodyBuilder\Elements;
 
+/**
+ * Interface ElementInterface
+ *
+ * @package Banana\BodyBuilder\Elements
+ * @author  Vasily Oksak <voksak@gmail.com>
+ */
 interface ElementInterface
 {
 
+    /**
+     * @param array $attributes
+     *
+     * @return $this
+     */
     public function setAttributes(array $attributes);
 
+    /**
+     * @param string $content
+     *
+     * @return $this
+     */
     public function setContent($content);
+
+    /**
+     * @return string
+     */
     public function toString();
 
 }

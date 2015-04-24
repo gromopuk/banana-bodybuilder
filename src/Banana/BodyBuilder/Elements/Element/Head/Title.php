@@ -13,14 +13,29 @@ namespace Banana\BodyBuilder\Elements\Element\Head;
 
 use Banana\BodyBuilder\Elements\ElementAbstract;
 
+/**
+ * Class Title
+ *
+ * @todo    Add class description
+ * @todo    Add tests
+ *
+ * @package Banana\BodyBuilder\Elements\Element\Head
+ * @author  Vasily Oksak <voksak@gmail.com>
+ */
 class Title extends ElementAbstract
 {
 
+    /**
+     * @param string $title
+     */
     public function __construct($title = '')
     {
         $this->setContent($title);
     }
 
+    /**
+     * @return string
+     */
     public static function getElementTemplate()
     {
         return '<title>' . self::MARKER_CONTENT . '</title>';

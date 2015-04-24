@@ -13,6 +13,15 @@ namespace Banana\BodyBuilder\Elements;
 
 use CommerceGuys\Enum\AbstractEnum;
 
+/**
+ * Class Type
+ *
+ * @todo    Add class description
+ * @todo    Add tests
+ *
+ * @package Banana\BodyBuilder\Elements
+ * @author  Vasily Oksak <voksak@gmail.com>
+ */
 class Type extends AbstractEnum
 {
 

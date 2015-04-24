@@ -25,16 +25,43 @@ use Banana\BodyBuilder\WidgetAbstract;
 class BodyBuilder
 {
 
+    /**
+     *
+     */
     const OPEN_MARKER = '@';
+
+    /**
+     *
+     */
     const CLOSE_MARKER = '\@';
+
+    /**
+     *
+     */
     const BLOCK_OPEN_MARKER = '@block';
+
+    /**
+     *
+     */
     const BLOCK_CLOSE_MARKER = '@\block';
+
+    /**
+     *
+     */
     const INCLUDE_OPEN_MARKER = '@include';
+
+    /**
+     *
+     */
     const INCLUDE_CLOSE_MARKER = '@\include';
+
+    /**
+     *
+     */
     const VARIABLE_MARKER = '@:';
 
     /**
-     * @var \Banana\BodyBuilder\Rendering\EngineInterface|null
+     * @var EngineInterface|null
      */
     protected $renderingEngine;
 
@@ -59,12 +86,12 @@ class BodyBuilder
     public function assertRenderingEngineInstalled()
     {
         if (!$this->getRenderingEngine()) {
-            throw new \RuntimeException("Rendering engine is not installed");
+            throw new \RuntimeException('Rendering engine is not installed');
         }
     }
 
     /**
-     * @return \Banana\BodyBuilder\Rendering\EngineInterface
+     * @return EngineInterface
      */
     public function getRenderingEngine()
     {
@@ -72,9 +99,9 @@ class BodyBuilder
     }
 
     /**
-     * @param \Banana\BodyBuilder\Rendering\EngineInterface $engine
+     * @param EngineInterface $engine
      *
-     * @return self
+     * @return $this
      */
     public function setRenderingEngine(EngineInterface $engine)
     {

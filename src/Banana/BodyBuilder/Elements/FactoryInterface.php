@@ -11,10 +11,22 @@
 
 namespace Banana\BodyBuilder\Elements;
 
-
+/**
+ * Interface FactoryInterface
+ *
+ * @package Banana\BodyBuilder\Elements
+ * @author  Vasily Oksak <voksak@gmail.com>
+ */
 interface FactoryInterface
 {
 
+    /**
+     * @param string $type
+     * @param array  $attributes
+     * @param string $content
+     *
+     * @return ElementInterface
+     */
     public function createElement($type, array $attributes = [], $content = '');
 
 }

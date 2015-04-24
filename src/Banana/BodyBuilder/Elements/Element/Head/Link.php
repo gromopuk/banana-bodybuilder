@@ -11,11 +11,20 @@
 
 namespace Banana\BodyBuilder\Elements\Element\Head;
 
-
 use Banana\BodyBuilder\Elements\ElementAbstract;
 
+/**
+ * Class Link
+ *
+ * @todo    Add class description
+ * @todo    Add tests
+ *
+ * @package Banana\BodyBuilder\Elements\Element\Head
+ * @author  Vasily Oksak <voksak@gmail.com>
+ */
 class Link extends ElementAbstract
 {
+
     const CHARSET = 'charset';
     const HREF = 'href';
     const MEDIA = 'media';
@@ -23,11 +32,17 @@ class Link extends ElementAbstract
     const SIZES = 'sizes';
     const TYPE = 'type';
 
+    /**
+     * @return string[]
+     */
     public static function getElementAttributes()
     {
         return [self::CHARSET, self::HREF, self::MEDIA, self::REL, self::SIZES, self::TYPE];
     }
 
+    /**
+     * @return string
+     */
     public static function getElementTemplate()
     {
         return '<link ' . self::MARKER_ATTRIBUTES . '>';

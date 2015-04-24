@@ -11,9 +11,17 @@
 
 namespace Banana\BodyBuilder\Elements\Element;
 
-
 use Banana\BodyBuilder\Elements\ElementAbstract;
 
+/**
+ * Class Script
+ *
+ * @todo    Add class description
+ * @todo    Add tests
+ *
+ * @package Banana\BodyBuilder\Elements\Element
+ * @author  Vasily Oksak <voksak@gmail.com>
+ */
 class Script extends ElementAbstract
 {
 
@@ -23,11 +31,17 @@ class Script extends ElementAbstract
     const SRC = 'src';
     const TYPE = 'type';
 
+    /**
+     * @return string[]
+     */
     public static function getElementAttributes()
     {
         return [self::ASYNC, self::DEFER, self::LANGUAGE, self::SRC, self::TYPE];
     }
 
+    /**
+     * @return string
+     */
     public static function getElementTemplate()
     {
         return '<script ' . self::MARKER_ATTRIBUTES . '>' . self::MARKER_CONTENT . '</script>';

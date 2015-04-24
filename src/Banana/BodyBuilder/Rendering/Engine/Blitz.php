@@ -13,8 +13,9 @@ namespace Banana\BodyBuilder\Rendering\Engine;
 
 use Banana\BodyBuilder;
 use Banana\BodyBuilder\Rendering\EngineInterface;
-use Banana\BodyBuilder\Rendering\Template;
 use Banana\BodyBuilder\Rendering\LayoutInterface;
+use Banana\BodyBuilder\Rendering\Template;
+use Banana\BodyBuilder\Rendering\Template\FormatterInterface;
 use Banana\BodyBuilder\Rendering\Template\Type as TemplateType;
 
 /**
@@ -31,48 +32,17 @@ class Blitz implements EngineInterface
 
     private static $_driverStatus;
 
-    private $_templateMap;
-    private $_includeTemplateFileVariable = 'template';
-    private $_includeBlockNamePrefix = 'include_';
+    protected $stringTemplateFormatter;
+    protected $templateMap;
+    protected $includeTemplateFileVariable = 'template';
+    protected $includeBlockNamePrefix = 'include_';
 
     /**
      * @param \Banana\BodyBuilder\Rendering\Template\MapInterface $templateMap
      */
     public function __construct(Template\MapInterface $templateMap)
     {
-        $this->_templateMap = $templateMap;
-    }
-
-    /**
-     * @return \Banana\BodyBuilder\Rendering\Template\MapInterface
-     */
-    public function getTemplateMap()
-    {
-        return $this->_templateMap;
-    }
-
-    public function setIncludeTemplateFileVariable($name)
-    {
-        $this->_includeTemplateFileVariable = (string)$name;
-
-        return $this;
-    }
-
-    public function getIncludeTemplateFileVariable()
-    {
-        return $this->_includeTemplateFileVariable;
-    }
-
-    public function setIncludeBlockNamePrefix($prefix)
-    {
-        $this->_includeBlockNamePrefix = (string)$prefix;
-
-        return $this;
-    }
-
-    public function getIncludeBlockNamePrefix()
-    {
-        return $this->_includeBlockNamePrefix;
+        $this->templateMap = $templateMap;
     }
 
     /**
@@ -117,10 +87,29 @@ class Blitz implements EngineInterface
         if ($layout->getTemplateType() == BodyBuilder\Rendering\Template\Type::FILE) {
             $engine = new \Blitz($this->getTemplateMap()->getTemplateFilePath($layout->getTemplate()));
         } else {
-            $engine = (new \Blitz)->load($layout->getTemplate());
+            $engine = (new \Blitz)->load($this->getStringTemplateFormatter()->format($layout->getTemplate()));
         }
 
         return $engine;
+    }
+
+    /**
+     * @return \Banana\BodyBuilder\Rendering\Template\MapInterface
+     */
+    public function getTemplateMap()
+    {
+        return $this->templateMap;
+    }
+
+    /**
+     * @return FormatterInterface
+     */
+    public function getStringTemplateFormatter()
+    {
+        if ($this->stringTemplateFormatter === null) {
+            $this->stringTemplateFormatter = new Blitz\Template\Formatter();
+        }
+        return $this->stringTemplateFormatter;
     }
 
     /**
@@ -132,7 +121,7 @@ class Blitz implements EngineInterface
     {
         $parameters = $layout->getVariables();
         /**
-         * @var string             $includeName
+         * @var string          $includeName
          * @var LayoutInterface $includeLayout
          */
         foreach ($layout->getIncludedLayouts() as $includeName => $includeLayout) {
@@ -165,7 +154,29 @@ class Blitz implements EngineInterface
         }
     }
 
+    public function getIncludeTemplateFileVariable()
+    {
+        return $this->includeTemplateFileVariable;
+    }
 
+    public function setIncludeTemplateFileVariable($name)
+    {
+        $this->includeTemplateFileVariable = (string)$name;
+
+        return $this;
+    }
+
+    public function getIncludeBlockNamePrefix()
+    {
+        return $this->includeBlockNamePrefix;
+    }
+
+    public function setIncludeBlockNamePrefix($prefix)
+    {
+        $this->includeBlockNamePrefix = (string)$prefix;
+
+        return $this;
+    }
 
     /**
      * @param LayoutInterface $layout
@@ -176,4 +187,5 @@ class Blitz implements EngineInterface
     {
         // TODO: Implement fetch() method.
     }
+
 }

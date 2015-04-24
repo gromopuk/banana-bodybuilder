@@ -25,6 +25,14 @@ use Banana\BodyBuilder\WidgetAbstract;
 class BodyBuilder
 {
 
+    const OPEN_MARKER = '@';
+    const CLOSE_MARKER = '\@';
+    const BLOCK_OPEN_MARKER = '@block';
+    const BLOCK_CLOSE_MARKER = '@\block';
+    const INCLUDE_OPEN_MARKER = '@include';
+    const INCLUDE_CLOSE_MARKER = '@\include';
+    const VARIABLE_MARKER = '@:';
+
     /**
      * @var \Banana\BodyBuilder\Rendering\EngineInterface|null
      */

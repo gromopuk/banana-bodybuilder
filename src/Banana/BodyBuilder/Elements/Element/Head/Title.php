@@ -16,6 +16,11 @@ use Banana\BodyBuilder\Elements\ElementAbstract;
 class Title extends ElementAbstract
 {
 
+    public function __construct($title = '')
+    {
+        $this->setContent($title);
+    }
+
     public static function getElementTemplate()
     {
         return '<title>' . self::MARKER_CONTENT . '</title>';

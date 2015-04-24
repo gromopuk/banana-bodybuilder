@@ -14,7 +14,6 @@ namespace Banana\BodyBuilder;
 use Banana\BodyBuilder\Elements;
 use Banana\BodyBuilder\Widget;
 
-
 /**
  * Class Widget
  *

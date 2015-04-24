@@ -11,6 +11,8 @@
 
 namespace Banana\BodyBuilder\Rendering;
 
+use Banana\BodyBuilder\Rendering\Template\FormatterInterface;
+
 interface EngineInterface
 {
 
@@ -32,5 +34,11 @@ interface EngineInterface
      * @return string
      */
     public function fetch(LayoutInterface $layout);
+
+    /**
+     * @return FormatterInterface
+     */
+    public function getStringTemplateFormatter();
+
 
 }

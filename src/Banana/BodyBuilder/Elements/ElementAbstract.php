@@ -62,18 +62,6 @@ abstract class ElementAbstract implements ElementInterface
         return isset($this->attributes[(string)$name]);
     }
 
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-
-    public function setAttributes(array $attributes)
-    {
-        $this->assertElementAttributesExists($attributes);
-        $this->attributes = array_merge($this->attributes, $attributes);
-        return $this;
-    }
-
     public function toString()
     {
         $search = [static::MARKER_ATTRIBUTES, static::MARKER_CONTENT];
@@ -83,16 +71,37 @@ abstract class ElementAbstract implements ElementInterface
 
     public function getAttributesAsString()
     {
-        $attributes = [];
-        foreach ($this->attributes as $attributeName => $attributeValue) {
-            $attribute = $attributeName;
-            if (!is_bool($attributeValue)) {
-                $attribute .= '="' . $attributeValue . '"';
+        if ($this->hasAttributes()) {
+            $attributes = [];
+            foreach ($this->attributes as $attributeName => $attributeValue) {
+                $attribute = $attributeName;
+                if (!is_bool($attributeValue)) {
+                    $attribute .= '="' . $attributeValue . '"';
+                }
+                $attributes[] = $attribute;
             }
-            $attributes[] = $attribute;
+            return implode(' ', $attributes);
         }
+        return '';
+    }
 
-        return implode(' ', $attributes);
+    public function hasAttributes()
+    {
+        return (bool)$this->getAttributes();
+    }
+
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    public function setAttributes(array $attributes)
+    {
+        if (!empty($attributes)) {
+            $this->assertElementAttributesExists($attributes);
+            $this->attributes = array_merge($this->attributes, $attributes);
+        }
+        return $this;
     }
 
     public function getContent()
@@ -108,7 +117,7 @@ abstract class ElementAbstract implements ElementInterface
 
     public static function getElementTemplate()
     {
-        return "";
+        return '';
     }
 
 }

@@ -44,7 +44,7 @@ class Factory implements FactoryInterface
     protected function assertElementClassExists($type)
     {
         if (!$this->hasElementClass($type)) {
-            throw new \InvalidArgumentException("Factory has no registered classes for building element with type `$type`");
+            throw new \InvalidArgumentException('Factory has no registered classes for building element with type ' . $type);
         }
     }
 
@@ -71,7 +71,7 @@ class Factory implements FactoryInterface
     protected function assertElementClassCorrect($class)
     {
         if (in_array(ElementInterface::class, class_implements($class))) {
-            throw new \InvalidArgumentException("Element class `$class` must implements " . ElementInterface::class);
+            throw new \InvalidArgumentException('Element ' . $class . ' must implements ' . ElementInterface::class);
         }
     }
 }

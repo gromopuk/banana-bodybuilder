@@ -25,7 +25,7 @@ class Formatter extends FormatterAbstract
     const VARIABLE_MARKER = '$';
 
     /**
-     * @return array
+     * @return string[]
      */
     protected function getReplaceMarkers()
     {

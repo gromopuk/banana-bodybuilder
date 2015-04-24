@@ -92,7 +92,7 @@ TEMPLATE;
     }
 
     /**
-     * @return null|string
+     * @return string
      */
     public function getTemplateString()
     {

@@ -32,13 +32,18 @@ abstract class FormatterAbstract implements FormatterInterface
     const INCLUDE_CLOSE_MARKER = '';
     const VARIABLE_MARKER = '';
 
+    /**
+     * @param string $templateString
+     *
+     * @return string
+     */
     public function format($templateString)
     {
         return str_replace($this->getSearchMarkers(), $this->getReplaceMarkers(), $templateString);
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     protected function getSearchMarkers()
     {
@@ -54,7 +59,7 @@ abstract class FormatterAbstract implements FormatterInterface
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     abstract protected function getReplaceMarkers();
 

@@ -15,6 +15,11 @@ namespace Banana\BodyBuilder\Rendering\Template;
 interface FormatterInterface
 {
 
+    /**
+     * @param string $templateString
+     *
+     * @return string
+     */
     public function format($templateString);
 
 }

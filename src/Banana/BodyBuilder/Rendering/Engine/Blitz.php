@@ -30,7 +30,7 @@ use Banana\BodyBuilder\Rendering\Template\Type as TemplateType;
 class Blitz implements EngineInterface
 {
 
-    private static $_driverStatus;
+    protected static $driverStatus;
 
     protected $stringTemplateFormatter;
     protected $templateMap;
@@ -43,6 +43,18 @@ class Blitz implements EngineInterface
     public function __construct(Template\MapInterface $templateMap)
     {
         $this->templateMap = $templateMap;
+    }
+
+    /**
+     * @param LayoutInterface $layout
+     *
+     * @return string
+     */
+    public function fetch(LayoutInterface $layout)
+    {
+        ob_start();
+        $this->render($layout);
+        return ob_get_flush();
     }
 
     /**
@@ -68,9 +80,9 @@ class Blitz implements EngineInterface
      */
     protected function assertExtensionLoaded()
     {
-        if (self::$_driverStatus === null) {
+        if (self::$driverStatus === null) {
             if (extension_loaded('blitz')) {
-                self::$_driverStatus = true;
+                self::$driverStatus = true;
             } else {
                 throw new \RuntimeException("Extension `blitz` required for rendering templates with Blitz template engine");
             }
@@ -126,18 +138,56 @@ class Blitz implements EngineInterface
          */
         foreach ($layout->getIncludedLayouts() as $includeName => $includeLayout) {
             /** @todo add support of string templates rendering through inner render() call and replace by additional variable in block instead template variable */
-            if ($includeLayout->getTemplateType() != TemplateType::FILE) {
-                throw new \InvalidArgumentException("Blitz engine can include only files, string includes are not supported");
+            $includeBlockName = $this->getIncludeName($includeName);
+            if ($includeLayout->getTemplateType() == TemplateType::FILE) {
+                $parameters[$includeBlockName] = $this->buildIncludeLayoutParameters($includeLayout);
+            } else {
+                $parameters[$includeBlockName] = $this->fetch($includeLayout);
             }
-
-            $includeParameters = $this->buildParameters($includeLayout);
-            $this->assertReservedVariablesNamesNotUsed($includeParameters);
-
-            $includeParameters[$this->getIncludeTemplateFileVariable()] = $this->getTemplateMap()->getTemplateFilePath($includeLayout->getTemplate());
-            $includeBlockName = $this->getIncludeBlockNamePrefix() . $includeName;
-            $parameters[$includeBlockName] = $includeParameters;
         }
+        return $parameters;
+    }
 
+    /**
+     * @param string $includeName
+     *
+     * @return string
+     */
+    protected function getIncludeName($includeName)
+    {
+        return $this->getIncludeBlockNamePrefix() . $includeName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIncludeBlockNamePrefix()
+    {
+        return $this->includeBlockNamePrefix;
+    }
+
+    /**
+     * @param string $prefix
+     *
+     * @return $this
+     */
+    public function setIncludeBlockNamePrefix($prefix)
+    {
+        $this->includeBlockNamePrefix = (string)$prefix;
+
+        return $this;
+    }
+
+    /**
+     * @param LayoutInterface $includeLayout
+     *
+     * @return array
+     */
+    protected function buildIncludeLayoutParameters(LayoutInterface $includeLayout)
+    {
+        $parameters = $this->buildParameters($includeLayout);
+        $this->assertReservedVariablesNamesNotUsed($parameters);
+        $parameters[$this->getIncludeTemplateFileVariable()] = $this->getTemplateMap()->getTemplateFilePath($includeLayout->getTemplate());
         return $parameters;
     }
 
@@ -154,38 +204,24 @@ class Blitz implements EngineInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function getIncludeTemplateFileVariable()
     {
         return $this->includeTemplateFileVariable;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
     public function setIncludeTemplateFileVariable($name)
     {
         $this->includeTemplateFileVariable = (string)$name;
 
         return $this;
-    }
-
-    public function getIncludeBlockNamePrefix()
-    {
-        return $this->includeBlockNamePrefix;
-    }
-
-    public function setIncludeBlockNamePrefix($prefix)
-    {
-        $this->includeBlockNamePrefix = (string)$prefix;
-
-        return $this;
-    }
-
-    /**
-     * @param LayoutInterface $layout
-     *
-     * @return string
-     */
-    public function fetch(LayoutInterface $layout)
-    {
-        // TODO: Implement fetch() method.
     }
 
 }

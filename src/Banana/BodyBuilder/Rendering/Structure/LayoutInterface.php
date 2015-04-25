@@ -26,7 +26,7 @@ interface LayoutInterface
     public function getTemplateName();
 
     /**
-     * @return Block
+     * @return BlockInterface
      */
     public function getBlock();
 

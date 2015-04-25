@@ -22,7 +22,7 @@ use Banana\BodyBuilder;
 class Layout implements LayoutInterface
 {
 
-    /** @var Block */
+    /** @var BlockInterface */
     protected $block;
     /** @var string */
     protected $templateName;
@@ -56,7 +56,7 @@ class Layout implements LayoutInterface
     }
 
     /**
-     * @return Block
+     * @return BlockInterface
      */
     public function getBlock()
     {

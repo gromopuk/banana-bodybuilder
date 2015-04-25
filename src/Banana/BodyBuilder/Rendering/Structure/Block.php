@@ -17,7 +17,7 @@ namespace Banana\BodyBuilder\Rendering\Structure;
  * @package Banana\BodyBuilder\Rendering
  * @author  Vasily Oksak <voksak@gmail.com>
  */
-class Block
+class Block implements BlockInterface
 {
 
     /**
@@ -84,12 +84,12 @@ class Block
 
     /**
      * @param string $name
-     * @param Block  $block
+     * @param BlockInterface|null $block
      *
      * @return Block
      * @throws \InvalidArgumentException
      */
-    public function addBlock($name, Block $block = null)
+    public function addBlock($name, BlockInterface $block = null)
     {
         $name = (string)$name;
         if ($this->hasVariable($name)) {
@@ -111,9 +111,9 @@ class Block
     /**
      * @param string $name
      *
-     * @return Block[]
+     * @return BlockInterface[]
      */
-    public function getBlocks($name)
+    public function getBlocksByName($name)
     {
         $name = (string)$name;
         if (isset($this->blocks[$name])) {
@@ -129,7 +129,7 @@ class Block
     public function toArray()
     {
         $array = $this->getVariables();
-        foreach ($this->getAllBlocks() as $blockName => $blocks) {
+        foreach ($this->getBlocks() as $blockName => $blocks) {
             /** @var Block $block */
             foreach ($blocks as $block) {
                 $array[$blockName][] = $block->toArray();
@@ -150,7 +150,7 @@ class Block
     /**
      * @return array
      */
-    public function getAllBlocks()
+    public function getBlocks()
     {
         return $this->blocks;
     }

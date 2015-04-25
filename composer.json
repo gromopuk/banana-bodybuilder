@@ -1,6 +1,6 @@
 {
     "name": "banana/bodybuilder",
-    "description": "Banana BodyBuilder package",
+    "description": "Banana BodyBuilder library",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -11,6 +11,9 @@
     ],
     "require": {
         "php": ">=5.5"
+    },
+    "suggest": {
+        "banana/bodybuilder-rendering-engine-blitz": "Allows use Blitz template engine as rendering engine"
     },
     "require-dev": {
         "phpunit/phpunit": "4.*",

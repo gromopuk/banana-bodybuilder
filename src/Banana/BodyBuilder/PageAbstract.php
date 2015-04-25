@@ -15,7 +15,7 @@ use Banana\BodyBuilder\Elements\ElementInterface;
 use Banana\BodyBuilder\Elements\Type as ElementType;
 
 /**
- * Class Page
+ * Abstract class PageAbstract
  *
  * @todo    Add class description
  * @todo    Add tests
@@ -23,7 +23,7 @@ use Banana\BodyBuilder\Elements\Type as ElementType;
  * @package Banana\BodyBuilder
  * @author  Vasily Oksak <voksak@gmail.com>
  */
-abstract class Page extends WidgetsGroupAbstract
+abstract class PageAbstract extends WidgetsGroupAbstract
 {
 
     const PAGE_TITLE_DEFAULT = 'Banana\BodyBuilder generated page';
@@ -57,7 +57,7 @@ abstract class Page extends WidgetsGroupAbstract
     /**
      * @param array $attributes
      *
-     * @return Page
+     * @return PageAbstract
      */
     public function addMeta(array $attributes)
     {

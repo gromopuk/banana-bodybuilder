@@ -11,8 +11,6 @@
 
 namespace Banana\BodyBuilder\Elements;
 
-use CommerceGuys\Enum\AbstractEnum;
-
 /**
  * Class Type
  *
@@ -22,7 +20,7 @@ use CommerceGuys\Enum\AbstractEnum;
  * @package Banana\BodyBuilder\Elements
  * @author  Vasily Oksak <voksak@gmail.com>
  */
-class Type extends AbstractEnum
+class Type
 {
 
     const LINK = 'link';

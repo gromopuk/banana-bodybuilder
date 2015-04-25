@@ -73,22 +73,22 @@ abstract class PageAbstract extends WidgetsGroupAbstract
     }
 
     /**
-     * @param \Banana\BodyBuilder\Rendering\Structure\Block $block
+     * @param \Banana\BodyBuilder\Rendering\Structure\BlockInterface $block
      *
      * @return void
      */
-    protected function buildBlock(Rendering\Structure\Block $block)
+    protected function buildBlock(Rendering\Structure\BlockInterface $block)
     {
         $this->buildTitle($block)
             ->buildMeta($block);
     }
 
     /**
-     * @param \Banana\BodyBuilder\Rendering\Structure\Block $block
+     * @param \Banana\BodyBuilder\Rendering\Structure\BlockInterface $block
      *
      * @return $this
      */
-    protected function buildMeta(Rendering\Structure\Block $block)
+    protected function buildMeta(Rendering\Structure\BlockInterface $block)
     {
         foreach ($this->getMetaElements() as $metaElement) {
             $metaBlock = $block->addBlock('meta');
@@ -106,11 +106,11 @@ abstract class PageAbstract extends WidgetsGroupAbstract
     }
 
     /**
-     * @param \Banana\BodyBuilder\Rendering\Structure\Block $block
+     * @param \Banana\BodyBuilder\Rendering\Structure\BlockInterface $block
      *
      * @return $this
      */
-    protected function buildTitle(Rendering\Structure\Block $block)
+    protected function buildTitle(Rendering\Structure\BlockInterface $block)
     {
         $block->setVariable('title', $this->getTitleElement()->toString());
         return $this;

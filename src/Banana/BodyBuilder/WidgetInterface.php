@@ -11,6 +11,7 @@
 
 namespace Banana\BodyBuilder;
 
+use Banana\BodyBuilder\Elements\FactoryInterface;
 use Banana\BodyBuilder\Widget\ContextInterface;
 
 /**
@@ -50,5 +51,17 @@ interface WidgetInterface
      * @return \Banana\BodyBuilder\Rendering\Structure\LayoutInterface
      */
     public function getLayout();
+
+    /**
+     * @param FactoryInterface $factory
+     *
+     * @return $this
+     */
+    public function setElementsFactory(FactoryInterface $factory);
+
+    /**
+     * @return FactoryInterface
+     */
+    public function getElementsFactory();
 
 }

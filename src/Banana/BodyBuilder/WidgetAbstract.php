@@ -24,8 +24,6 @@ use Banana\BodyBuilder\Widget\ContextInterface;
 abstract class WidgetAbstract implements WidgetInterface
 {
 
-    use Elements\FactoryTrait;
-
     /**
      * @var ContextInterface|null
      */
@@ -34,6 +32,10 @@ abstract class WidgetAbstract implements WidgetInterface
      * @var Widget\Assets|null
      */
     protected $assets;
+    /**
+     * @var Elements\FactoryInterface
+     */
+    protected $elementsFactory;
 
     /**
      * @return Widget\Assets|null
@@ -123,5 +125,39 @@ abstract class WidgetAbstract implements WidgetInterface
      * @return void
      */
     abstract protected function buildBlock(Rendering\Structure\BlockInterface $block);
+
+    /**
+     * @param string $type
+     * @param array  $attributes
+     * @param string $content
+     *
+     * @return Elements\ElementInterface
+     */
+    public function createElement($type, array $attributes = [], $content = '')
+    {
+        return $this->getElementsFactory()->createElement($type, $attributes, $content);
+    }
+
+    /**
+     * @return Elements\FactoryInterface
+     */
+    public function getElementsFactory()
+    {
+        if ($this->elementsFactory === null) {
+            $this->elementsFactory = new Elements\Factory();
+        }
+        return $this->elementsFactory;
+    }
+
+    /**
+     * @param Elements\FactoryInterface $factory
+     *
+     * @return $this
+     */
+    public function setElementsFactory(Elements\FactoryInterface $factory)
+    {
+        $this->elementsFactory = $factory;
+        return $this;
+    }
 
 }

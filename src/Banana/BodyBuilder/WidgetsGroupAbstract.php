@@ -24,7 +24,7 @@ abstract class WidgetsGroupAbstract extends WidgetAbstract
     protected $widgets = [];
 
     /**
-     * @param string         $position
+     * @param string $position
      * @param WidgetInterface $widget
      *
      * @return $this
@@ -33,9 +33,8 @@ abstract class WidgetsGroupAbstract extends WidgetAbstract
     {
         $this->widgets[$position] = $widget;
         $widget->setContext($this->getContext())
-            ->setAssets($this->getAssets());
-        /** @todo check uses FactoryTrait */
-        //$widget->setElementsFactory($this->getElementsFactory());
+            ->setAssets($this->getAssets())
+            ->setElementsFactory($this->getElementsFactory());
         return $this;
     }
 

@@ -25,6 +25,12 @@ abstract class WidgetsGroupAbstract extends WidgetAbstract
     /** @var WidgetAbstract[] */
     protected $widgets = [];
 
+    /**
+     * @param string         $position
+     * @param WidgetAbstract $widget
+     *
+     * @return $this
+     */
     public function addWidget($position, WidgetAbstract $widget)
     {
         $this->widgets[$position] = $widget;
@@ -35,17 +41,27 @@ abstract class WidgetsGroupAbstract extends WidgetAbstract
         return $this;
     }
 
+    /**
+     * @param string $position
+     *
+     * @return WidgetAbstract|null
+     */
     public function getWidget($position)
     {
         if ($this->hasWidget($position)) {
-            return $this->widgets[$position];
+            return $this->widgets[(string)$position];
         }
         return null;
     }
 
+    /**
+     * @param string $position
+     *
+     * @return bool
+     */
     public function hasWidget($position)
     {
-        return isset($this->widgets[$position]);
+        return isset($this->widgets[(string)$position]);
     }
 
     /**

@@ -15,8 +15,6 @@ use Banana\BodyBuilder;
 use Banana\BodyBuilder\Rendering\EngineInterface;
 use Banana\BodyBuilder\Rendering\LayoutInterface;
 use Banana\BodyBuilder\Rendering\Template;
-use Banana\BodyBuilder\Rendering\Template\FormatterInterface;
-use Banana\BodyBuilder\Rendering\Template\Type as TemplateType;
 
 /**
  * Class Renderer
@@ -32,9 +30,8 @@ class Blitz implements EngineInterface
 
     protected static $driverStatus;
 
-    protected $stringTemplateFormatter;
     protected $templateMap;
-    protected $includeTemplateFileVariable = 'template';
+    protected $includeTemplateFileVariable = 'templateName';
     protected $includeBlockNamePrefix = 'include_';
 
     /**
@@ -63,7 +60,7 @@ class Blitz implements EngineInterface
      * @return void
      *
      * @throws \RuntimeException If blitz extension is not installed or loaded
-     * @throws \InvalidArgumentException If given structure contents include with string template. Blitz engine can
+     * @throws \InvalidArgumentException If given structure contents include with string templateName. Blitz engine can
      *                                   include only files so string includes are not supported
      */
     public function render(LayoutInterface $layout)
@@ -84,7 +81,7 @@ class Blitz implements EngineInterface
             if (extension_loaded('blitz')) {
                 self::$driverStatus = true;
             } else {
-                throw new \RuntimeException("Extension `blitz` required for rendering templates with Blitz template engine");
+                throw new \RuntimeException("Extension `blitz` required for rendering templates with Blitz templateName engine");
             }
         }
     }
@@ -96,13 +93,7 @@ class Blitz implements EngineInterface
      */
     protected function prepareEngine(LayoutInterface $layout)
     {
-        if ($layout->getTemplateType() == BodyBuilder\Rendering\Template\Type::FILE) {
-            $engine = new \Blitz($this->getTemplateMap()->getTemplateFilePath($layout->getTemplate()));
-        } else {
-            $engine = (new \Blitz)->load($this->getStringTemplateFormatter()->format($layout->getTemplate()));
-        }
-
-        return $engine;
+        return new \Blitz($this->getTemplateMap()->getTemplateFilePath($layout->getTemplateName()));
     }
 
     /**
@@ -111,17 +102,6 @@ class Blitz implements EngineInterface
     public function getTemplateMap()
     {
         return $this->templateMap;
-    }
-
-    /**
-     * @return FormatterInterface
-     */
-    public function getStringTemplateFormatter()
-    {
-        if ($this->stringTemplateFormatter === null) {
-            $this->stringTemplateFormatter = new Blitz\Template\Formatter();
-        }
-        return $this->stringTemplateFormatter;
     }
 
     /**
@@ -137,13 +117,9 @@ class Blitz implements EngineInterface
          * @var LayoutInterface $includeLayout
          */
         foreach ($layout->getIncludedLayouts() as $includeName => $includeLayout) {
-            /** @todo add support of string templates rendering through inner render() call and replace by additional variable in block instead template variable */
             $includeBlockName = $this->getIncludeName($includeName);
-            if ($includeLayout->getTemplateType() == TemplateType::FILE) {
-                $parameters[$includeBlockName] = $this->buildIncludeLayoutParameters($includeLayout);
-            } else {
-                $parameters[$includeBlockName] = $this->fetch($includeLayout);
-            }
+            $parameters[$includeBlockName] = $this->buildIncludeLayoutParameters($includeLayout);
+
         }
         return $parameters;
     }
@@ -187,7 +163,7 @@ class Blitz implements EngineInterface
     {
         $parameters = $this->buildParameters($includeLayout);
         $this->assertReservedVariablesNamesNotUsed($parameters);
-        $parameters[$this->getIncludeTemplateFileVariable()] = $this->getTemplateMap()->getTemplateFilePath($includeLayout->getTemplate());
+        $parameters[$this->getIncludeTemplateFileVariable()] = $this->getTemplateMap()->getTemplateFilePath($includeLayout->getTemplateName());
         return $parameters;
     }
 
@@ -199,7 +175,7 @@ class Blitz implements EngineInterface
     protected function assertReservedVariablesNamesNotUsed(array $parameters)
     {
         if (isset($parameters[$this->getIncludeTemplateFileVariable()])) {
-            throw new \UnexpectedValueException("Variable name `" . $this->getIncludeTemplateFileVariable() . "` for template file path of included " .
+            throw new \UnexpectedValueException("Variable name `" . $this->getIncludeTemplateFileVariable() . "` for templateName file path of included " .
                 "structure is already used by inner structure variable or block");
         }
     }

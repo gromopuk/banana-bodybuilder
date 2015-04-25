@@ -23,26 +23,10 @@ use Banana\BodyBuilder\Elements\Type as ElementType;
  * @package Banana\BodyBuilder
  * @author  Vasily Oksak <voksak@gmail.com>
  */
-class Page extends WidgetsGroupAbstract
+abstract class Page extends WidgetsGroupAbstract
 {
 
     const PAGE_TITLE_DEFAULT = 'Banana\BodyBuilder generated page';
-    const PAGE_TEMPLATE = <<<'TEMPLATE'
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    @block meta\@
-        @@:meta\@
-    @\block meta\@
-    @@:title\@
-</head>
-<body>
-@block include_body\@
-    @include@:template@\include
-@\block include_body\@
-</body>
-</html>
-TEMPLATE;
 
     /** @var ElementInterface */
     protected $title;
@@ -92,24 +76,16 @@ TEMPLATE;
     }
 
     /**
-     * @return string
-     */
-    public function getTemplateString()
-    {
-        return self::PAGE_TEMPLATE;
-    }
-
-    /**
      * @param \Banana\BodyBuilder\Rendering\Block $block
      *
      * @return void
      */
     protected function buildBlock(Rendering\Block $block)
     {
-        $block->setVariable('elementTitle', $this->getTitleElement()->toString());
+        $block->setVariable('title', $this->getTitleElement()->toString());
         foreach ($this->getMetaElements() as $metaElement) {
-            $metaBlock = $block->addBlock('elementsMeta');
-            $metaBlock->setVariable('elementMeta', $metaElement->toString());
+            $metaBlock = $block->addBlock('meta');
+            $metaBlock->setVariable('meta', $metaElement->toString());
         }
     }
 

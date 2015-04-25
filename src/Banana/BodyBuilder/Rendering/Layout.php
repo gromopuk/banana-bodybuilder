@@ -12,7 +12,6 @@
 namespace Banana\BodyBuilder\Rendering;
 
 use Banana\BodyBuilder;
-use Banana\BodyBuilder\Rendering\Template\Type as TemplateType;
 
 /**
  * Class Layout
@@ -26,79 +25,36 @@ class Layout implements LayoutInterface
 {
 
     /** @var Block */
-    private $_block;
+    protected $_block;
     /** @var string */
-    private $_template;
-    /** @var string */
-    private $_templateType;
+    protected $templateName;
     /** @var Layout[] */
-    private $_includes = [];
+    protected $includes = [];
 
     /**
-     * @param string $type
-     * @param string $template
-     *
-     * @throws \InvalidArgumentException If given template type is not supported
+     * @param string $templateName
      */
-    public function __construct($type, $template)
+    public function __construct($templateName)
     {
-        $this->setTemplate($type, $template);
-    }
-
-    /**
-     * @param string $filePath
-     *
-     * @return Layout
-     */
-    public static function createFromFile($filePath)
-    {
-        return new static(TemplateType::FILE, $filePath);
-    }
-
-    /**
-     * @param string $templateString
-     *
-     * @return Layout
-     */
-    public static function createFromString($templateString)
-    {
-        return new static(TemplateType::STRING, $templateString);
+        $this->setTemplateName($templateName);
     }
 
     /**
      * @return string
      */
-    public function getTemplate()
+    public function getTemplateName()
     {
-        return $this->_template;
+        return $this->templateName;
     }
 
     /**
-     * @param string $type
-     * @param string $template
+     * @param string $templateName
      *
      * @return void
-     *
-     * @throws \InvalidArgumentException If given template type is not supported
      */
-    protected function setTemplate($type, $template)
+    protected function setTemplateName($templateName)
     {
-        try {
-            TemplateType::assertExists($type);
-        } catch (\InvalidArgumentException $e) {
-            throw new \InvalidArgumentException("Template type `$type` is not supported", 0, $e);
-        }
-
-        $this->_templateType = $type;
-        $this->_template = (string)$template;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTemplateType()
-    {
-        return $this->_templateType;
+        $this->templateName = (string)$templateName;
     }
 
     /**
@@ -122,21 +78,21 @@ class Layout implements LayoutInterface
 
     /**
      * @param string $name
-     * @param Layout $layout
+     * @param LayoutInterface $layout
      *
      * @return void
      */
-    public function includeLayout($name, Layout $layout)
+    public function includeLayout($name, LayoutInterface $layout)
     {
-        $this->_includes[(string)$name] = $layout;
+        $this->includes[(string)$name] = $layout;
     }
 
     /**
-     * @return Layout[]
+     * @return LayoutInterface[]
      */
     public function getIncludedLayouts()
     {
-        return $this->_includes;
+        return $this->includes;
     }
 
 }

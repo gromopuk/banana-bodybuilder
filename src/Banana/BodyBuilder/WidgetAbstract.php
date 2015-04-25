@@ -29,9 +29,12 @@ abstract class WidgetAbstract
     use Elements\FactoryTrait;
 
     /**
-     * @var Widget\Context
+     * @var Widget\Context|null
      */
     protected $context;
+    /**
+     * @var Widget\Assets|null
+     */
     protected $assets;
 
     /**
@@ -45,6 +48,9 @@ abstract class WidgetAbstract
         return $this->context;
     }
 
+    /**
+     * @return Widget\Assets
+     */
     public function getAssets()
     {
         if ($this->assets === null) {
@@ -56,7 +62,7 @@ abstract class WidgetAbstract
     /**
      * @return \Banana\BodyBuilder\Rendering\Layout
      *
-     * @throws \RuntimeException If no template file or template string specified as widget template
+     * @throws \RuntimeException If no templateName file or templateName string specified as widget templateName
      */
     public function getLayout()
     {
@@ -67,51 +73,16 @@ abstract class WidgetAbstract
 
     /**
      * @return \Banana\BodyBuilder\Rendering\Layout
-     *
-     * @throws \RuntimeException If no template file or template string specified as widget template
      */
     protected function createLayout()
     {
-        if ($this->hasTemplateFile()) {
-            return Rendering\Layout::createFromFile($this->getTemplateFile());
-        } else if ($this->hasTemplateString()) {
-            return Rendering\Layout::createFromString($this->getTemplateString());
-        } else {
-            throw new \RuntimeException("Widget has no template file or template string to be used");
-        }
+        return new Rendering\Layout($this->getTemplateName());
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function hasTemplateFile()
-    {
-        return (bool)$this->getTemplateFile();
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getTemplateFile()
-    {
-        return null;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasTemplateString()
-    {
-        return (bool)$this->getTemplateString();
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getTemplateString()
-    {
-        return null;
-    }
+    abstract public function getTemplateName();
 
     /**
      * @param \Banana\BodyBuilder\Rendering\Layout $layout
@@ -130,6 +101,11 @@ abstract class WidgetAbstract
      */
     abstract protected function buildBlock(Rendering\Block $block);
 
+    /**
+     * @param Widget\Assets $otherAssets
+     *
+     * @return void
+     */
     protected function mergeAssets(Widget\Assets $otherAssets)
     {
         if ($this->assets === null) {

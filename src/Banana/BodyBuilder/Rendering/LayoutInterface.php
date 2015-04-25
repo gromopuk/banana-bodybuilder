@@ -15,15 +15,19 @@ namespace Banana\BodyBuilder\Rendering;
 interface LayoutInterface
 {
 
-    public function getTemplate();
-
-    public function getTemplateType();
+    /**
+     * @return string
+     */
+    public function getTemplateName();
 
     /**
      * @return array
      */
     public function getVariables();
 
+    /**
+     * @return LayoutInterface[]
+     */
     public function getIncludedLayouts();
 
 }

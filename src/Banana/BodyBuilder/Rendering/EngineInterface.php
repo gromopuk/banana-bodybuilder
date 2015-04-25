@@ -35,10 +35,4 @@ interface EngineInterface
      */
     public function fetch(LayoutInterface $layout);
 
-    /**
-     * @return FormatterInterface
-     */
-    public function getStringTemplateFormatter();
-
-
 }

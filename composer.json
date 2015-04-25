@@ -13,9 +13,16 @@
         "php": ">=5.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.*"
+        "phpunit/phpunit": "4.*",
+        "banana/bodybuilder-rendering-engine-blitz": "dev-master"
     },
     "autoload": {
         "psr-4": {"Banana\\": "src/Banana"}
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/gromopuk/banana-bodybuilder-rendering-engine-blitz"
+        }
+    ]
 }

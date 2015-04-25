@@ -13,6 +13,7 @@ namespace Banana\BodyBuilder;
 
 use Banana\BodyBuilder\Elements;
 use Banana\BodyBuilder\Widget;
+use Banana\BodyBuilder\Widget\ContextInterface;
 
 /**
  * Abstract class WidgetAbstract
@@ -26,7 +27,7 @@ abstract class WidgetAbstract implements WidgetInterface
     use Elements\FactoryTrait;
 
     /**
-     * @var Widget\Context|null
+     * @var ContextInterface|null
      */
     protected $context;
     /**
@@ -62,7 +63,7 @@ abstract class WidgetAbstract implements WidgetInterface
     }
 
     /**
-     * @return Widget\Context
+     * @return ContextInterface
      */
     public function getContext()
     {
@@ -73,11 +74,11 @@ abstract class WidgetAbstract implements WidgetInterface
     }
 
     /**
-     * @param Widget\Context $context
+     * @param ContextInterface $context
      *
      * @return $this
      */
-    public function setContext(Widget\Context $context)
+    public function setContext(ContextInterface $context)
     {
         $this->getContext()->setParent($context);
         return $this;
@@ -117,10 +118,10 @@ abstract class WidgetAbstract implements WidgetInterface
     }
 
     /**
-     * @param \Banana\BodyBuilder\Rendering\Structure\Block $block
+     * @param \Banana\BodyBuilder\Rendering\Structure\BlockInterface $block
      *
      * @return void
      */
-    abstract protected function buildBlock(Rendering\Structure\Block $block);
+    abstract protected function buildBlock(Rendering\Structure\BlockInterface $block);
 
 }

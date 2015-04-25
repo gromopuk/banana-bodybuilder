@@ -11,6 +11,8 @@
 
 namespace Banana\BodyBuilder;
 
+use Banana\BodyBuilder\Widget\ContextInterface;
+
 /**
  * Interface WidgetInterface
  *
@@ -33,14 +35,14 @@ interface WidgetInterface
     public function getAssets();
 
     /**
-     * @param Widget\Context $context
+     * @param ContextInterface $context
      *
      * @return $this
      */
-    public function setContext(Widget\Context $context);
+    public function setContext(ContextInterface $context);
 
     /**
-     * @return Widget\Context
+     * @return ContextInterface
      */
     public function getContext();
 

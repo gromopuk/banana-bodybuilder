@@ -17,10 +17,10 @@ namespace Banana\BodyBuilder\Widget;
  * @package Banana\BodyBuilder\Widget
  * @author  Vasily Oksak <voksak@gmail.com>
  */
-class Context
+class Context implements ContextInterface
 {
 
-    /** @var Context */
+    /** @var ContextInterface */
     protected $parent;
     /** @var array */
     protected $values = [];
@@ -39,7 +39,7 @@ class Context
      * @param int|float|string|bool|array|null|\ArrayAccess|\Iterator|callable $value Value of supported type
      *                                                                                or callable
      *
-     * @return Context Current scope instance to use as Fluent interface
+     * @return ContextInterface Current scope instance to use as Fluent interface
      *
      * @throws \InvalidArgumentException If unsupported value type is given
      */
@@ -125,6 +125,83 @@ class Context
     }
 
     /**
+     * Checks is value or callable is registered under given name in current context or in its parents
+     *
+     * Returns FALSE if registered value is NULL
+     *
+     * @param string $name Name of value or callable to check
+     *
+     * @return bool
+     */
+    public function has($name)
+    {
+        $name = (string)$name;
+        if ($this->hasValue($name) || $this->hasCallable($name)) {
+            return true;
+        } else if ($this->hasParent()) {
+            return $this->getParent()->has($name);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Checks is value is registered under given name in current context
+     *
+     * @param string $name Name of value to check
+     *
+     * @return bool
+     */
+    protected function hasValue($name)
+    {
+        return isset($this->values[$name]);
+    }
+
+    /**
+     * Checks is callable is registered under given name in current context
+     *
+     * @param string $name Name of callable to check
+     *
+     * @return bool
+     */
+    protected function hasCallable($name)
+    {
+        return isset($this->callable[$name]);
+    }
+
+    /**
+     * Checks is current context has parent
+     *
+     * @return bool
+     */
+    public function hasParent()
+    {
+        return $this->parent !== null;
+    }
+
+    /**
+     * Returns parent context instance or null if parent context is not exists
+     *
+     * @return ContextInterface|null
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Set parent for current context
+     *
+     * @param ContextInterface $parent Parent context instance
+     *
+     * @return void
+     */
+    public function setParent(ContextInterface $parent)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
      * Returns value, registered under requested name or NULL if no value or callable is registered
      *
      * If under requested name is registered callable, it will be called once at first call of method and result of
@@ -157,30 +234,6 @@ class Context
     }
 
     /**
-     * Checks is value is registered under given name in current context
-     *
-     * @param string $name Name of value to check
-     *
-     * @return bool
-     */
-    protected function hasValue($name)
-    {
-        return isset($this->values[$name]);
-    }
-
-    /**
-     * Checks is callable is registered under given name in current context
-     *
-     * @param string $name Name of callable to check
-     *
-     * @return bool
-     */
-    protected function hasCallable($name)
-    {
-        return isset($this->callable[$name]);
-    }
-
-    /**
      * Returns result of callable execution, which registered in context under given name
      *
      * Method does not check is callable registered by itself
@@ -192,59 +245,6 @@ class Context
     protected function executeCallable($name)
     {
         return call_user_func($this->callable[$name]);
-    }
-
-    /**
-     * Checks is current context has parent
-     *
-     * @return bool
-     */
-    public function hasParent()
-    {
-        return $this->parent !== null;
-    }
-
-    /**
-     * Returns parent context instance or null if parent context is not exists
-     *
-     * @return Context|null
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
-
-    /**
-     * Set parent for current context
-     *
-     * @param Context $parent Parent context instance
-     *
-     * @return void
-     */
-    public function setParent(Context $parent)
-    {
-        $this->parent = $parent;
-    }
-
-    /**
-     * Checks is value or callable is registered under given name in current context or in its parents
-     *
-     * Returns FALSE if registered value is NULL
-     *
-     * @param string $name Name of value or callable to check
-     *
-     * @return bool
-     */
-    public function has($name)
-    {
-        $name = (string)$name;
-        if ($this->hasValue($name) || $this->hasCallable($name)) {
-            return true;
-        } else if ($this->hasParent()) {
-            return $this->getParent()->has($name);
-        } else {
-            return false;
-        }
     }
 
 }

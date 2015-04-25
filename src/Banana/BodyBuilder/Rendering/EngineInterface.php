@@ -11,8 +11,14 @@
 
 namespace Banana\BodyBuilder\Rendering;
 
-use Banana\BodyBuilder\Rendering\Template\FormatterInterface;
+use Banana\BodyBuilder\Rendering\Structure\LayoutInterface;
 
+/**
+ * Interface EngineInterface
+ *
+ * @package Banana\BodyBuilder\Rendering
+ * @author  Vasily Oksak <voksak@gmail.com>
+ */
 interface EngineInterface
 {
 

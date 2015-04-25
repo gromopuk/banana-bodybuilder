@@ -9,9 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Banana\BodyBuilder\Rendering;
+namespace Banana\BodyBuilder\Rendering\Structure;
 
-
+/**
+ * Interface LayoutInterface
+ *
+ * @package Banana\BodyBuilder\Rendering
+ * @author  Vasily Oksak <voksak@gmail.com>
+ */
 interface LayoutInterface
 {
 
@@ -21,9 +26,17 @@ interface LayoutInterface
     public function getTemplateName();
 
     /**
-     * @return array
+     * @return Block
      */
-    public function getVariables();
+    public function getBlock();
+
+    /**
+     * @param string          $name
+     * @param LayoutInterface $layout
+     *
+     * @return mixed
+     */
+    public function includeLayout($name, LayoutInterface $layout);
 
     /**
      * @return LayoutInterface[]

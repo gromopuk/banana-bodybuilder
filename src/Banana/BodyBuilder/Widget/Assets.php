@@ -11,59 +11,104 @@
 
 namespace Banana\BodyBuilder\Widget;
 
-use Banana\BodyBuilder\Elements;
+use Banana\BodyBuilder\Elements\ElementInterface;
+use Banana\BodyBuilder\Elements\FactoryTrait;
+use Banana\BodyBuilder\Elements\Type as ElementType;
 
 /**
  * Class Assets
  *
- * @todo    Add class description
- * @todo    Add tests
- * @todo    Add priority argument support for ss and js
- * @todo    Check is ss or js already added
- * @todo    Add support of if statements
- *
- * @package BodyBuilder\Widget
+ * @package Banana\BodyBuilder\Widget
  * @author  Vasily Oksak <voksak@gmail.com>
  */
 class Assets
 {
 
-    use Elements\FactoryTrait;
+    use FactoryTrait;
 
+    /**
+     *
+     */
     const SCRIPT_POSITION_HEAD = 'head';
+    /**
+     *
+     */
     const SCRIPT_POSITION_BODY = 'body';
 
+    /**
+     * @var array
+     */
     protected static $allowedScriptPositions = [self::SCRIPT_POSITION_HEAD, self::SCRIPT_POSITION_BODY];
 
+    /**
+     * @var ElementInterface[]
+     */
     protected $styleSheetElements = [];
+    /**
+     * @var array
+     */
     protected $scriptElements = [
         self::SCRIPT_POSITION_HEAD => [],
         self::SCRIPT_POSITION_BODY => []
     ];
 
+    /**
+     * @param array $attributes
+     *
+     * @return Assets
+     */
     public function addStyleSheet(array $attributes = [])
     {
-        return $this->addStyleSheetElement($this->createElement(Elements\Type::LINK, $attributes));
+        return $this->addStyleSheetElement($this->createElement(ElementType::LINK, $attributes));
     }
 
-    public function addStyleSheetElement(Elements\ElementInterface $element)
+    /**
+     * @param ElementInterface $element
+     *
+     * @return $this
+     */
+    public function addStyleSheetElement(ElementInterface $element)
     {
         $this->styleSheetElements[] = $element;
         return $this;
     }
 
+    /**
+     * @param string $position
+     * @param array  $attributes
+     * @param string $content
+     *
+     * @return Assets
+     *
+     * @throws \InvalidArgumentException
+     */
     public function addScript($position, array $attributes = [], $content = '')
     {
-        return $this->addScriptElement($position, $this->createElement(Elements\Type::SCRIPT, $attributes, $content));
+        return $this->addScriptElement($position, $this->createElement(ElementType::SCRIPT, $attributes, $content));
     }
 
-    public function addScriptElement($position, Elements\ElementInterface $element)
+    /**
+     * @param string           $position
+     * @param ElementInterface $element
+     *
+     * @return $this
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function addScriptElement($position, ElementInterface $element)
     {
         $this->assertScriptPositionExists($position);
         $this->scriptElements[$position][] = $element;
         return $this;
     }
 
+    /**
+     * @param string $position
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     */
     protected function assertScriptPositionExists($position)
     {
         if (!in_array($position, self::$allowedScriptPositions)) {
@@ -71,6 +116,11 @@ class Assets
         }
     }
 
+    /**
+     * @param Assets $otherAssets
+     *
+     * @return void
+     */
     public function merge(Assets $otherAssets)
     {
         foreach ($otherAssets->getStyleSheetElements() as $element) {
@@ -83,11 +133,21 @@ class Assets
         }
     }
 
+    /**
+     * @return ElementInterface[]
+     */
     public function getStyleSheetElements()
     {
         return $this->styleSheetElements;
     }
 
+    /**
+     * @param string $position
+     *
+     * @return ElementInterface[]
+     *
+     * @throws \InvalidArgumentException
+     */
     public function getScriptElements($position)
     {
         $this->assertScriptPositionExists($position);

@@ -12,12 +12,10 @@
 namespace Banana;
 
 use Banana\BodyBuilder\Rendering\EngineInterface;
-use Banana\BodyBuilder\WidgetAbstract;
+use Banana\BodyBuilder\WidgetInterface;
 
 /**
  * Class BodyBuilder
- *
- * @todo    Add class description
  *
  * @package Banana
  * @author  Vasily Oksak <voksak@gmail.com>
@@ -31,13 +29,13 @@ class BodyBuilder
     protected $renderingEngine;
 
     /**
-     * @param WidgetAbstract $widget
+     * @param WidgetInterface $widget
      *
      * @return void
      *
      * @throws \RuntimeException If Rendering engine instance is not installed
      */
-    public function build(WidgetAbstract $widget)
+    public function build(WidgetInterface $widget)
     {
         $this->assertRenderingEngineInstalled();
         $this->getRenderingEngine()->render($widget->getLayout());

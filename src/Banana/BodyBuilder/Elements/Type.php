@@ -14,9 +14,6 @@ namespace Banana\BodyBuilder\Elements;
 /**
  * Class Type
  *
- * @todo    Add class description
- * @todo    Add tests
- *
  * @package Banana\BodyBuilder\Elements
  * @author  Vasily Oksak <voksak@gmail.com>
  */

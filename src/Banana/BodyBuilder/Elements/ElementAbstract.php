@@ -14,9 +14,6 @@ namespace Banana\BodyBuilder\Elements;
 /**
  * Abstract class ElementAbstract
  *
- * @todo    Add class description
- * @todo    Add tests
- *
  * @package Banana\BodyBuilder\Elements
  * @author  Vasily Oksak <voksak@gmail.com>
  */
@@ -27,7 +24,6 @@ abstract class ElementAbstract implements ElementInterface
      *
      */
     const MARKER_ATTRIBUTES = '@attributes';
-
     /**
      *
      */

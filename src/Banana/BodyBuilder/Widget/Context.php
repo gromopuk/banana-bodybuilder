@@ -12,10 +12,7 @@
 namespace Banana\BodyBuilder\Widget;
 
 /**
- * Class Scope
- *
- * @todo    Add class description
- * @todo Interface
+ * Class Context
  *
  * @package Banana\BodyBuilder\Widget
  * @author  Vasily Oksak <voksak@gmail.com>
@@ -24,11 +21,11 @@ class Context
 {
 
     /** @var Context */
-    private $_parent;
+    protected $parent;
     /** @var array */
-    private $_values = [];
+    protected $values = [];
     /** @var callable[] */
-    private $_callable = [];
+    protected $callable = [];
 
     /**
      * Register value or callable into scope
@@ -58,30 +55,6 @@ class Context
     }
 
     /**
-     * Set value in context
-     *
-     * Supported value types are scalar, null, array, instance of \ArrayAccess or \Iterator interface
-     *
-     * Callable, registered under the same name in current scope, will be replaced by given value
-     *
-     * @param string                                                           $name  Name of value
-     * @param int|float|string|bool|array|null|\ArrayAccess|\Iterator|callable $value Value of supported type
-     *
-     * @return void
-     *
-     * @throws \InvalidArgumentException If unsupported value type is given
-     */
-    protected function setValue($name, $value)
-    {
-        if (is_scalar($value) || is_array($value) || $value === null || $value instanceof \ArrayAccess || $value instanceof \Iterator) {
-            $this->_values[$name] = $value;
-            $this->unsetCallable($name);
-        } else {
-            throw new \InvalidArgumentException("Value must be scalar, array, null, \\ArrayAccess or \\Iterator instance");
-        }
-    }
-
-    /**
      * Set callable in context
      *
      * Callable will be called once at first call of method self::get() with name of this callable and result of
@@ -99,7 +72,7 @@ class Context
      */
     protected function setCallable($name, callable $callable)
     {
-        $this->_callable[$name] = $callable;
+        $this->callable[$name] = $callable;
         $this->unsetValue($name);
     }
 
@@ -112,7 +85,31 @@ class Context
      */
     protected function unsetValue($name)
     {
-        unset($this->_values[$name]);
+        unset($this->values[$name]);
+    }
+
+    /**
+     * Set value in context
+     *
+     * Supported value types are scalar, null, array, instance of \ArrayAccess or \Iterator interface
+     *
+     * Callable, registered under the same name in current scope, will be replaced by given value
+     *
+     * @param string                                                           $name  Name of value
+     * @param int|float|string|bool|array|null|\ArrayAccess|\Iterator|callable $value Value of supported type
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException If unsupported value type is given
+     */
+    protected function setValue($name, $value)
+    {
+        if (is_scalar($value) || is_array($value) || $value === null || $value instanceof \ArrayAccess || $value instanceof \Iterator) {
+            $this->values[$name] = $value;
+            $this->unsetCallable($name);
+        } else {
+            throw new \InvalidArgumentException("Value must be scalar, array, null, \\ArrayAccess or \\Iterator instance");
+        }
     }
 
     /**
@@ -124,7 +121,7 @@ class Context
      */
     protected function unsetCallable($name)
     {
-        unset($this->_callable[$name]);
+        unset($this->callable[$name]);
     }
 
     /**
@@ -144,7 +141,7 @@ class Context
     {
         $name = (string)$name;
         if ($this->hasValue($name)) {
-            return $this->_values[$name];
+            return $this->values[$name];
         } else if ($this->hasCallable($name)) {
             try {
                 $this->setValue($name, $this->executeCallable($name));
@@ -160,6 +157,30 @@ class Context
     }
 
     /**
+     * Checks is value is registered under given name in current context
+     *
+     * @param string $name Name of value to check
+     *
+     * @return bool
+     */
+    protected function hasValue($name)
+    {
+        return isset($this->values[$name]);
+    }
+
+    /**
+     * Checks is callable is registered under given name in current context
+     *
+     * @param string $name Name of callable to check
+     *
+     * @return bool
+     */
+    protected function hasCallable($name)
+    {
+        return isset($this->callable[$name]);
+    }
+
+    /**
      * Returns result of callable execution, which registered in context under given name
      *
      * Method does not check is callable registered by itself
@@ -170,7 +191,39 @@ class Context
      */
     protected function executeCallable($name)
     {
-        return call_user_func($this->_callable[$name]);
+        return call_user_func($this->callable[$name]);
+    }
+
+    /**
+     * Checks is current context has parent
+     *
+     * @return bool
+     */
+    public function hasParent()
+    {
+        return $this->parent !== null;
+    }
+
+    /**
+     * Returns parent context instance or null if parent context is not exists
+     *
+     * @return Context|null
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Set parent for current context
+     *
+     * @param Context $parent Parent context instance
+     *
+     * @return void
+     */
+    public function setParent(Context $parent)
+    {
+        $this->parent = $parent;
     }
 
     /**
@@ -192,62 +245,6 @@ class Context
         } else {
             return false;
         }
-    }
-
-    /**
-     * Checks is value is registered under given name in current context
-     *
-     * @param string $name Name of value to check
-     *
-     * @return bool
-     */
-    protected function hasValue($name)
-    {
-        return isset($this->_values[$name]);
-    }
-
-    /**
-     * Checks is callable is registered under given name in current context
-     *
-     * @param string $name Name of callable to check
-     *
-     * @return bool
-     */
-    protected function hasCallable($name)
-    {
-        return isset($this->_callable[$name]);
-    }
-
-    /**
-     * Set parent for current context
-     *
-     * @param Context $parent Parent context instance
-     *
-     * @return void
-     */
-    public function setParent(Context $parent)
-    {
-        $this->_parent = $parent;
-    }
-
-    /**
-     * Checks is current context has parent
-     *
-     * @return bool
-     */
-    public function hasParent()
-    {
-        return $this->_parent !== null;
-    }
-
-    /**
-     * Returns parent context instance or null if parent context is not exists
-     *
-     * @return Context|null
-     */
-    public function getParent()
-    {
-        return $this->_parent;
     }
 
 }

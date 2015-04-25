@@ -11,7 +11,12 @@
 
 namespace Banana\BodyBuilder\Elements;
 
-
+/**
+ * Class Factory
+ *
+ * @package Banana\BodyBuilder\Elements
+ * @author  Vasily Oksak <voksak@gmail.com>
+ */
 class Factory implements FactoryInterface
 {
 

@@ -12,9 +12,7 @@
 namespace Banana\BodyBuilder;
 
 /**
- * Class Group
- *
- * @todo    Add class description
+ * Abstract class WidgetsGroupAbstract
  *
  * @package Banana\BodyBuilder
  * @author  Vasily Oksak <voksak@gmail.com>
@@ -22,29 +20,29 @@ namespace Banana\BodyBuilder;
 abstract class WidgetsGroupAbstract extends WidgetAbstract
 {
 
-    /** @var WidgetAbstract[] */
+    /** @var WidgetInterface[] */
     protected $widgets = [];
 
     /**
      * @param string         $position
-     * @param WidgetAbstract $widget
+     * @param WidgetInterface $widget
      *
      * @return $this
      */
-    public function addWidget($position, WidgetAbstract $widget)
+    public function addWidget($position, WidgetInterface $widget)
     {
         $this->widgets[$position] = $widget;
-        $widget->getContext()->setParent($this->getContext());
-        $widget->mergeAssets($this->getAssets());
-        $widget->setElementsFactory($this->getElementsFactory());
-
+        $widget->setContext($this->getContext())
+            ->setAssets($this->getAssets());
+        /** @todo check uses FactoryTrait */
+        //$widget->setElementsFactory($this->getElementsFactory());
         return $this;
     }
 
     /**
      * @param string $position
      *
-     * @return WidgetAbstract|null
+     * @return WidgetInterface|null
      */
     public function getWidget($position)
     {
@@ -65,11 +63,11 @@ abstract class WidgetsGroupAbstract extends WidgetAbstract
     }
 
     /**
-     * @param \Banana\BodyBuilder\Rendering\Layout $layout
+     * @param \Banana\BodyBuilder\Rendering\Structure\LayoutInterface $layout
      *
      * @return void
      */
-    protected function buildLayout(Rendering\Layout $layout)
+    protected function buildLayout(Rendering\Structure\LayoutInterface $layout)
     {
         parent::buildLayout($layout);
         foreach ($this->getWidgets() as $position => $widget) {
@@ -78,7 +76,7 @@ abstract class WidgetsGroupAbstract extends WidgetAbstract
     }
 
     /**
-     * @return WidgetAbstract[]
+     * @return WidgetInterface[]
      */
     public function getWidgets()
     {

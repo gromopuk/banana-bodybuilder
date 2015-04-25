@@ -11,9 +11,20 @@
 
 namespace Banana\BodyBuilder\Rendering\Template;
 
+/**
+ * Interface MapInterface
+ *
+ * @package Banana\BodyBuilder\Rendering\Template
+ * @author  Vasily Oksak <voksak@gmail.com>
+ */
 interface MapInterface
 {
 
+    /**
+     * @param string $templateName
+     *
+     * @return string
+     */
     public function getTemplateFilePath($templateName);
 
 }

@@ -15,15 +15,12 @@ use Banana\BodyBuilder\Elements;
 use Banana\BodyBuilder\Widget;
 
 /**
- * Class Widget
- *
- * @todo    Add description of class
- * @todo    Add assets
+ * Abstract class WidgetAbstract
  *
  * @package Banana\BodyBuilder
  * @author  Vasily Oksak <voksak@gmail.com>
  */
-abstract class WidgetAbstract
+abstract class WidgetAbstract implements WidgetInterface
 {
 
     use Elements\FactoryTrait;
@@ -38,6 +35,33 @@ abstract class WidgetAbstract
     protected $assets;
 
     /**
+     * @return Widget\Assets|null
+     */
+    public function getAssets()
+    {
+        if ($this->assets === null) {
+            $this->assets = new Widget\Assets();
+        }
+        return $this->assets;
+    }
+
+    /**
+     * @param Widget\Assets $assets
+     *
+     * @return $this
+     */
+    public function setAssets(Widget\Assets $assets)
+    {
+        if ($this->assets === null) {
+            $this->assets = $assets;
+        } else {
+            $assets->merge($this->assets);
+            $this->assets = $assets;
+        }
+        return $this;
+    }
+
+    /**
      * @return Widget\Context
      */
     public function getContext()
@@ -49,20 +73,18 @@ abstract class WidgetAbstract
     }
 
     /**
-     * @return Widget\Assets
+     * @param Widget\Context $context
+     *
+     * @return $this
      */
-    public function getAssets()
+    public function setContext(Widget\Context $context)
     {
-        if ($this->assets === null) {
-            $this->assets = new Widget\Assets();
-        }
-        return $this->assets;
+        $this->getContext()->setParent($context);
+        return $this;
     }
 
     /**
-     * @return \Banana\BodyBuilder\Rendering\Layout
-     *
-     * @throws \RuntimeException If no templateName file or templateName string specified as widget templateName
+     * @return \Banana\BodyBuilder\Rendering\Structure\LayoutInterface
      */
     public function getLayout()
     {
@@ -72,47 +94,33 @@ abstract class WidgetAbstract
     }
 
     /**
-     * @return \Banana\BodyBuilder\Rendering\Layout
+     * @return \Banana\BodyBuilder\Rendering\Structure\LayoutInterface
      */
     protected function createLayout()
     {
-        return new Rendering\Layout($this->getTemplateName());
+        return new Rendering\Structure\Layout($this->getTemplateName());
     }
 
     /**
      * @return string
      */
-    abstract public function getTemplateName();
+    abstract protected function getTemplateName();
 
     /**
-     * @param \Banana\BodyBuilder\Rendering\Layout $layout
+     * @param \Banana\BodyBuilder\Rendering\Structure\LayoutInterface $layout
      *
      * @return void
      */
-    protected function buildLayout(Rendering\Layout $layout)
+    protected function buildLayout(Rendering\Structure\LayoutInterface $layout)
     {
         $this->buildBlock($layout->getBlock());
     }
 
     /**
-     * @param \Banana\BodyBuilder\Rendering\Block $block
+     * @param \Banana\BodyBuilder\Rendering\Structure\Block $block
      *
      * @return void
      */
-    abstract protected function buildBlock(Rendering\Block $block);
+    abstract protected function buildBlock(Rendering\Structure\Block $block);
 
-    /**
-     * @param Widget\Assets $otherAssets
-     *
-     * @return void
-     */
-    protected function mergeAssets(Widget\Assets $otherAssets)
-    {
-        if ($this->assets === null) {
-            $this->assets = $otherAssets;
-        } else {
-            $otherAssets->merge($this->assets);
-            $this->assets = $otherAssets;
-        }
-    }
 }

@@ -16,9 +16,6 @@ use Banana\BodyBuilder\Elements\ElementAbstract;
 /**
  * Class Link
  *
- * @todo    Add class description
- * @todo    Add tests
- *
  * @package Banana\BodyBuilder\Elements\Element\Head
  * @author  Vasily Oksak <voksak@gmail.com>
  */

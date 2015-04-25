@@ -17,16 +17,13 @@ use Banana\BodyBuilder\Elements\Type as ElementType;
 /**
  * Abstract class PageAbstract
  *
- * @todo    Add class description
- * @todo    Add tests
- *
  * @package Banana\BodyBuilder
  * @author  Vasily Oksak <voksak@gmail.com>
  */
 abstract class PageAbstract extends WidgetsGroupAbstract
 {
 
-    const PAGE_TITLE_DEFAULT = 'Banana\BodyBuilder generated page';
+    const PAGE_TITLE_DEFAULT = 'BodyBuilder page';
 
     /** @var ElementInterface */
     protected $title;
@@ -76,17 +73,47 @@ abstract class PageAbstract extends WidgetsGroupAbstract
     }
 
     /**
-     * @param \Banana\BodyBuilder\Rendering\Block $block
+     * @param \Banana\BodyBuilder\Rendering\Structure\Block $block
      *
      * @return void
      */
-    protected function buildBlock(Rendering\Block $block)
+    protected function buildBlock(Rendering\Structure\Block $block)
     {
-        $block->setVariable('title', $this->getTitleElement()->toString());
+        $this->buildTitle($block)
+            ->buildMeta($block);
+    }
+
+    /**
+     * @param \Banana\BodyBuilder\Rendering\Structure\Block $block
+     *
+     * @return $this
+     */
+    protected function buildMeta(Rendering\Structure\Block $block)
+    {
         foreach ($this->getMetaElements() as $metaElement) {
             $metaBlock = $block->addBlock('meta');
             $metaBlock->setVariable('meta', $metaElement->toString());
         }
+        return $this;
+    }
+
+    /**
+     * @return ElementInterface[]
+     */
+    public function getMetaElements()
+    {
+        return $this->meta;
+    }
+
+    /**
+     * @param \Banana\BodyBuilder\Rendering\Structure\Block $block
+     *
+     * @return $this
+     */
+    protected function buildTitle(Rendering\Structure\Block $block)
+    {
+        $block->setVariable('title', $this->getTitleElement()->toString());
+        return $this;
     }
 
     /**
@@ -98,14 +125,6 @@ abstract class PageAbstract extends WidgetsGroupAbstract
             $this->title = $this->createElement(ElementType::TITLE, [], static::PAGE_TITLE_DEFAULT);
         }
         return $this->title;
-    }
-
-    /**
-     * @return ElementInterface[]
-     */
-    public function getMetaElements()
-    {
-        return $this->meta;
     }
 
 }

@@ -16,25 +16,51 @@ use Banana\BodyBuilder;
 /**
  * Class Map
  *
- * @todo    Add class description
- *
  * @package Banana\BodyBuilder\Rendering\Template
  * @author  Vasily Oksak <voksak@gmail.com>
  */
 class Map implements MapInterface
 {
 
-    private $_templatesPath;
-    private $_extension;
-
+    /**
+     * @var string
+     */
+    protected $templatesPath;
+    /**
+     * @var string
+     */
+    protected $extension;
+    /**
+     * @var bool
+     */
     protected $checkTemplateFiles = true;
 
-    public function __construct($templatesPath, $extension = null)
+    /**
+     * @param string $templatesPath
+     * @param string $extension
+     */
+    public function __construct($templatesPath, $extension = '')
     {
-        $this->_templatesPath = rtrim($this->fixDirectorySeparator($templatesPath), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $this->_extension = (string)$extension;
+        $this->templatesPath = rtrim($this->fixDirectorySeparator($templatesPath),
+                DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $this->extension = (string)$extension;
     }
 
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function fixDirectorySeparator($path)
+    {
+        return str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $path);
+    }
+
+    /**
+     * @param bool $flag
+     *
+     * @return $this
+     */
     public function setCheckTemplateFilesExists($flag)
     {
         $this->checkTemplateFiles = (bool)$flag;
@@ -42,21 +68,11 @@ class Map implements MapInterface
         return $this;
     }
 
-    public function isCheckTemplateFilesExists()
-    {
-        return $this->checkTemplateFiles;
-    }
-
-    public function getTemplatesPath()
-    {
-        return $this->_templatesPath;
-    }
-
-    public function getExtension()
-    {
-        return $this->_extension;
-    }
-
+    /**
+     * @param string $templateName
+     *
+     * @return string
+     */
     public function getTemplateFilePath($templateName)
     {
         $templateName = trim($this->fixDirectorySeparator($templateName), DIRECTORY_SEPARATOR);
@@ -65,16 +81,40 @@ class Map implements MapInterface
         return $templateFile;
     }
 
-    protected function fixDirectorySeparator($path)
+    /**
+     * @return string
+     */
+    public function getTemplatesPath()
     {
-        return str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $path);
+        return $this->templatesPath;
     }
 
+    /**
+     * @return string
+     */
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
+    /**
+     * @param string $templateFile
+     *
+     * @return void
+     */
     protected function assertTemplateFileExists($templateFile)
     {
         if ($this->isCheckTemplateFilesExists() && !file_exists($templateFile)) {
             throw new \RuntimeException("Template file `$templateFile` not exists");
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCheckTemplateFilesExists()
+    {
+        return $this->checkTemplateFiles;
     }
 
 }

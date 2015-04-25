@@ -9,26 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace Banana\BodyBuilder\Rendering;
+namespace Banana\BodyBuilder\Rendering\Structure;
 
 use Banana\BodyBuilder;
 
 /**
  * Class Layout
  *
- * @todo    Add class description
- *
- * @package Banana\BodyBuilder\Widget
+ * @package Banana\BodyBuilder\Rendering
  * @author  Vasily Oksak <voksak@gmail.com>
  */
 class Layout implements LayoutInterface
 {
 
     /** @var Block */
-    protected $_block;
+    protected $block;
     /** @var string */
     protected $templateName;
-    /** @var Layout[] */
+    /** @var LayoutInterface[] */
     protected $includes = [];
 
     /**
@@ -58,22 +56,14 @@ class Layout implements LayoutInterface
     }
 
     /**
-     * @return array
-     */
-    public function getVariables()
-    {
-        return $this->getBlock()->toArray();
-    }
-
-    /**
      * @return Block
      */
     public function getBlock()
     {
-        if ($this->_block === null) {
-            $this->_block = new BodyBuilder\Rendering\Block();
+        if ($this->block === null) {
+            $this->block = new BodyBuilder\Rendering\Structure\Block();
         }
-        return $this->_block;
+        return $this->block;
     }
 
     /**

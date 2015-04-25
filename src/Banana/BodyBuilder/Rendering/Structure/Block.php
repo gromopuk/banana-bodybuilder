@@ -41,7 +41,7 @@ class Block implements BlockInterface
     {
         $name = (string)$name;
         if ($this->hasBlock($name)) {
-            throw new \InvalidArgumentException("Variable name `$name` already used by one of inner blocks");
+            throw new \InvalidArgumentException('Variable name `' . $name . '` already used by one of inner blocks');
         }
 
         $this->variables[$name] = $value;
@@ -93,7 +93,7 @@ class Block implements BlockInterface
     {
         $name = (string)$name;
         if ($this->hasVariable($name)) {
-            throw new \InvalidArgumentException("Block name `$name` already used by one of variables");
+            throw new \InvalidArgumentException('Block name `' . $name . '` already used by one of variables');
         }
 
         if (!$this->hasBlock($name)) {

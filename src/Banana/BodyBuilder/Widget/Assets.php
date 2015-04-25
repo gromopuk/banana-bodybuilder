@@ -112,7 +112,7 @@ class Assets
     protected function assertScriptPositionExists($position)
     {
         if (!in_array($position, self::$allowedScriptPositions)) {
-            throw new \InvalidArgumentException("Position `$position` for scripts includes is not exists");
+            throw new \InvalidArgumentException('Position `' . $position . '` for scripts includes is not exists');
         }
     }
 

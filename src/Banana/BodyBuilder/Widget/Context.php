@@ -108,7 +108,7 @@ class Context implements ContextInterface
             $this->values[$name] = $value;
             $this->unsetCallable($name);
         } else {
-            throw new \InvalidArgumentException("Value must be scalar, array, null, \\ArrayAccess or \\Iterator instance");
+            throw new \InvalidArgumentException('Value must be scalar, array, null, \ArrayAccess or \Iterator instance');
         }
     }
 
@@ -223,7 +223,7 @@ class Context implements ContextInterface
             try {
                 $this->setValue($name, $this->executeCallable($name));
             } catch (\InvalidArgumentException $e) {
-                throw new \UnexpectedValueException("Callable has return value of unsupported type", 0, $e);
+                throw new \UnexpectedValueException('Callable has return value of unsupported type', 0, $e);
             }
             return $this->get($name);
         } else if ($this->hasParent()) {

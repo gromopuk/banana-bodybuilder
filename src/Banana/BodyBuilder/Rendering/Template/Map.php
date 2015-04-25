@@ -105,7 +105,7 @@ class Map implements MapInterface
     protected function assertTemplateFileExists($templateFile)
     {
         if ($this->isCheckTemplateFilesExists() && !file_exists($templateFile)) {
-            throw new \RuntimeException("Template file `$templateFile` not exists");
+            throw new \RuntimeException('Template file `' . $templateFile . '` not exists');
         }
     }
 

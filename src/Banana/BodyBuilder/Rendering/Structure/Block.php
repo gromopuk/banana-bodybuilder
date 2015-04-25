@@ -25,7 +25,7 @@ class Block implements BlockInterface
      */
     protected $variables = [];
     /**
-     * @var Block[]
+     * @var BlockInterface[]
      */
     protected $blocks = [];
 

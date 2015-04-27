@@ -73,7 +73,6 @@ class ContextTest extends \PHPUnit_Framework_TestCase
         $context = new Context();
 
         $this->assertFalse($context->hasParent());
-        $this->assertNull($context->getParent());
     }
 
     public function testSetHasGetParentPositive()

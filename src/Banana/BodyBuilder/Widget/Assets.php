@@ -170,7 +170,7 @@ class Assets implements AssetsInterface
      */
     public function addStyleSheet($src, array $attributes = [], $weight = self::WEIGHT_DEFAULT)
     {
-        $this->styleSheets[$this->generateUniqueAssetKey($src)] = $this->formatAsset($src, $attributes, $weight);
+        $this->styleSheets[$this->cleanAssetSrc($src)] = $this->formatAsset($attributes, $weight);
         return $this;
     }
 
@@ -179,22 +179,20 @@ class Assets implements AssetsInterface
      *
      * @return string
      */
-    protected function generateUniqueAssetKey($src)
+    protected function cleanAssetSrc($src)
     {
         return trim($src);
     }
 
     /**
-     * @param string $src
      * @param array  $attributes
      * @param int    $weight
      *
      * @return array
      */
-    protected function formatAsset($src, array $attributes, $weight)
+    protected function formatAsset(array $attributes, $weight)
     {
         return [
-            self::KEY_SRC        => $src,
             self::KEY_ATTRIBUTES => $attributes,
             self::KEY_WEIGHT     => $weight,
         ];
@@ -226,7 +224,7 @@ class Assets implements AssetsInterface
     public function addScript($position, $src, array $attributes = [], $weight = self::WEIGHT_DEFAULT)
     {
         $this->assertScriptPositionExists($position);
-        $this->scripts[$position][$this->generateUniqueAssetKey($src)] = $this->formatAsset($src, $attributes, $weight);
+        $this->scripts[$position][$this->cleanAssetSrc($src)] = $this->formatAsset($attributes, $weight);
         return $this;
     }
 

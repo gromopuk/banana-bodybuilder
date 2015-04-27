@@ -13,6 +13,7 @@ namespace Banana\BodyBuilder;
 
 use Banana\BodyBuilder\Elements;
 use Banana\BodyBuilder\Widget;
+use Banana\BodyBuilder\Widget\AssetsInterface;
 use Banana\BodyBuilder\Widget\ContextInterface;
 
 /**
@@ -29,7 +30,7 @@ abstract class WidgetAbstract implements WidgetInterface
      */
     protected $context;
     /**
-     * @var Widget\Assets|null
+     * @var AssetsInterface|null
      */
     protected $assets;
     /**
@@ -38,7 +39,7 @@ abstract class WidgetAbstract implements WidgetInterface
     protected $elementsFactory;
 
     /**
-     * @return Widget\Assets|null
+     * @return AssetsInterface|null
      */
     public function getAssets()
     {
@@ -49,11 +50,11 @@ abstract class WidgetAbstract implements WidgetInterface
     }
 
     /**
-     * @param Widget\Assets $assets
+     * @param AssetsInterface $assets
      *
      * @return $this
      */
-    public function setAssets(Widget\Assets $assets)
+    public function setAssets(AssetsInterface $assets)
     {
         if ($this->assets === null) {
             $this->assets = $assets;

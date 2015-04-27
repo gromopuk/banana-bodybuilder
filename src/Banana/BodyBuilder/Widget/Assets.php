@@ -11,15 +11,13 @@
 
 namespace Banana\BodyBuilder\Widget;
 
-use Banana\BodyBuilder\Elements\ElementInterface;
-
 /**
  * Class Assets
  *
  * @package Banana\BodyBuilder\Widget
  * @author  Vasily Oksak <voksak@gmail.com>
  */
-class Assets
+class Assets implements AssetsInterface
 {
 
     /**
@@ -30,6 +28,34 @@ class Assets
      *
      */
     const SCRIPT_POSITION_BODY = 'body';
+    /**
+     *
+     */
+    const WEIGHT_LOW = 0;
+    /**
+     *
+     */
+    const WEIGHT_NORMAL = 1000;
+    /**
+     *
+     */
+    const WEIGHT_HIGH = 2000;
+    /**
+     *
+     */
+    const WEIGHT_DEFAULT = self::WEIGHT_NORMAL;
+    /**
+     *
+     */
+    const KEY_SRC = 'src';
+    /**
+     *
+     */
+    const KEY_ATTRIBUTES = 'attributes';
+    /**
+     *
+     */
+    const KEY_WEIGHT = 'weight';
 
     /**
      * @var array
@@ -37,64 +63,150 @@ class Assets
     protected static $allowedScriptPositions = [self::SCRIPT_POSITION_HEAD, self::SCRIPT_POSITION_BODY];
 
     /**
-     * @var ElementInterface[]
+     * @var array
      */
-    protected $styleSheetElements = [];
+    private $styleSheets = [];
     /**
      * @var array
      */
-    protected $scriptElements = [
+    private $scripts = [
         self::SCRIPT_POSITION_HEAD => [],
         self::SCRIPT_POSITION_BODY => []
     ];
 
     /**
-     * @param Assets $otherAssets
+     * @param bool $sort
      *
-     * @return void
+     * @return array
      */
-    public function merge(Assets $otherAssets)
+    public function getStyleSheets($sort = true)
     {
-        foreach ($otherAssets->getStyleSheetElements() as $element) {
-            $this->addStyleSheetElement($element);
+        if ($sort) {
+            return $this->sortByWeight($this->styleSheets);
+        } else {
+            return $this->styleSheets;
         }
-        foreach (self::$allowedScriptPositions as $position) {
-            foreach ($otherAssets->getScriptElements($position) as $element) {
-                $this->addScriptElement($position, $element);
+    }
+
+    /**
+     * @param array $elements
+     *
+     * @return array
+     */
+    protected function sortByWeight(array $elements)
+    {
+        uasort($elements, function ($left, $right) {
+            if ($left[static::KEY_WEIGHT] == $right[static::KEY_WEIGHT]) {
+                return 0;
             }
-        }
-    }
-
-    /**
-     * @return ElementInterface[]
-     */
-    public function getStyleSheetElements()
-    {
-        return $this->styleSheetElements;
-    }
-
-    /**
-     * @param ElementInterface $element
-     *
-     * @return $this
-     */
-    public function addStyleSheetElement(ElementInterface $element)
-    {
-        $this->styleSheetElements[] = $element;
-        return $this;
+            return ($left[static::KEY_WEIGHT] < $right[static::KEY_WEIGHT]) ? -1 : 1;
+        });
+        return $elements;
     }
 
     /**
      * @param string $position
+     * @param bool   $sort
      *
-     * @return ElementInterface[]
+     * @return array
      *
      * @throws \InvalidArgumentException
      */
-    public function getScriptElements($position)
+    public function getScripts($position, $sort = true)
     {
         $this->assertScriptPositionExists($position);
-        return $this->scriptElements[$position];
+        if ($sort) {
+            return $this->sortByWeight($this->scripts[$position]);
+        } else {
+            return $this->scripts[$position];
+        }
+    }
+
+    /**
+     * @param AssetsInterface $otherAssets
+     *
+     * @return void
+     */
+    public function merge(AssetsInterface $otherAssets)
+    {
+        $this->mergeStyleSheets($otherAssets);
+        foreach (static::$allowedScriptPositions as $position) {
+            $this->mergeScripts($position, $otherAssets);
+        }
+    }
+
+    /**
+     * @param AssetsInterface $otherAssets
+     *
+     * @return void
+     */
+    protected function mergeStyleSheets(AssetsInterface $otherAssets)
+    {
+        foreach ($otherAssets->getStyleSheets(false) as $styleSheet) {
+            $this->addStyleSheet($styleSheet['attributes'], $styleSheet['weight']);
+        }
+    }
+
+    /**
+     * @param string $src
+     * @param array  $attributes
+     * @param int    $weight
+     *
+     * @return $this
+     */
+    public function addStyleSheet($src, array $attributes = [], $weight = self::WEIGHT_DEFAULT)
+    {
+        $this->styleSheets[$this->generateUniqueAssetKey($src)] = [
+            self::KEY_SRC        => $src,
+            self::KEY_ATTRIBUTES => $attributes,
+            self::KEY_WEIGHT     => $weight,
+        ];
+        return $this;
+    }
+
+    /**
+     * @param string $src
+     *
+     * @return string
+     */
+    protected function generateUniqueAssetKey($src)
+    {
+        return trim($src);
+    }
+
+    /**
+     * @param string          $position
+     * @param AssetsInterface $otherAssets
+     *
+     * @return void
+     */
+    protected function mergeScripts($position, AssetsInterface $otherAssets)
+    {
+        foreach ($otherAssets->getScripts($position, false) as $script) {
+            $this->addScript($position, $script['attributes'], $script['weight']);
+        }
+    }
+
+    /**
+     * @param string $position
+     * @param string $src
+     * @param array  $attributes
+     * @param int    $weight
+     *
+     * @return $this
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function addScript($position, $src, array $attributes = [], $weight = self::WEIGHT_DEFAULT)
+    {
+        $this->assertScriptPositionExists($position);
+        $this->scripts[$position][$this->generateUniqueAssetKey($src)] = [
+            self::KEY_SRC        => $src,
+            self::KEY_ATTRIBUTES => $attributes,
+            self::KEY_WEIGHT     => $weight,
+        ];
+
+        return $this;
     }
 
     /**
@@ -109,21 +221,6 @@ class Assets
         if (!in_array($position, self::$allowedScriptPositions)) {
             throw new \InvalidArgumentException('Position `' . $position . '` for scripts includes is not exists');
         }
-    }
-
-    /**
-     * @param string           $position
-     * @param ElementInterface $element
-     *
-     * @return $this
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function addScriptElement($position, ElementInterface $element)
-    {
-        $this->assertScriptPositionExists($position);
-        $this->scriptElements[$position][] = $element;
-        return $this;
     }
 
 }

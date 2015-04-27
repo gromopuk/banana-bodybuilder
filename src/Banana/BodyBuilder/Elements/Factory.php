@@ -24,10 +24,10 @@ class Factory implements FactoryInterface
      * @var array
      */
     protected $classes = [
-        Type::LINK   => Element\Head\Link::class,
-        Type::META   => Element\Head\Meta::class,
-        Type::TITLE  => Element\Head\Title::class,
-        Type::SCRIPT => Element\Script::class,
+        ElementAbstract::TYPE_LINK   => Element\Head\Link::class,
+        ElementAbstract::TYPE_META   => Element\Head\Meta::class,
+        ElementAbstract::TYPE_TITLE  => Element\Head\Title::class,
+        ElementAbstract::TYPE_SCRIPT => Element\Script::class,
     ];
 
     /**

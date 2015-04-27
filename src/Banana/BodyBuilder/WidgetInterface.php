@@ -12,6 +12,7 @@
 namespace Banana\BodyBuilder;
 
 use Banana\BodyBuilder\Elements\FactoryInterface;
+use Banana\BodyBuilder\Widget\AssetsInterface;
 use Banana\BodyBuilder\Widget\ContextInterface;
 
 /**
@@ -24,14 +25,14 @@ interface WidgetInterface
 {
 
     /**
-     * @param Widget\Assets $assets
+     * @param AssetsInterface $assets
      *
      * @return $this
      */
-    public function setAssets(Widget\Assets $assets);
+    public function setAssets(AssetsInterface $assets);
 
     /**
-     * @return Widget\Assets
+     * @return AssetsInterface
      */
     public function getAssets();
 

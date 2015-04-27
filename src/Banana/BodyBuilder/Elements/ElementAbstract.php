@@ -28,6 +28,22 @@ abstract class ElementAbstract implements ElementInterface
      *
      */
     const MARKER_CONTENT = '@content';
+    /**
+     *
+     */
+    const TYPE_LINK = 'link';
+    /**
+     *
+     */
+    const TYPE_SCRIPT = 'script';
+    /**
+     *
+     */
+    const TYPE_TITLE = 'title';
+    /**
+     *
+     */
+    const TYPE_META = 'meta';
 
     /**
      * @var array

@@ -11,8 +11,8 @@
 
 namespace Banana\BodyBuilder;
 
+use Banana\BodyBuilder\Elements\ElementAbstract;
 use Banana\BodyBuilder\Elements\ElementInterface;
-use Banana\BodyBuilder\Elements\Type as ElementType;
 
 /**
  * Abstract class PageAbstract
@@ -37,7 +37,7 @@ abstract class PageAbstract extends WidgetsGroupAbstract
      */
     public function setTitle($title)
     {
-        return $this->setTitleElement($this->createElement(ElementType::TITLE, [], $title));
+        return $this->setTitleElement($this->createElement(ElementAbstract::TYPE_TITLE, [], $title));
     }
 
     /**
@@ -58,7 +58,7 @@ abstract class PageAbstract extends WidgetsGroupAbstract
      */
     public function addMeta(array $attributes)
     {
-        return $this->addMetaElement($this->createElement(ElementType::META, $attributes));
+        return $this->addMetaElement($this->createElement(ElementAbstract::TYPE_META, $attributes));
     }
 
     /**
@@ -122,7 +122,7 @@ abstract class PageAbstract extends WidgetsGroupAbstract
     public function getTitleElement()
     {
         if ($this->title === null) {
-            $this->title = $this->createElement(ElementType::TITLE, [], static::PAGE_TITLE_DEFAULT);
+            $this->title = $this->createElement(ElementAbstract::TYPE_TITLE, [], static::PAGE_TITLE_DEFAULT);
         }
         return $this->title;
     }

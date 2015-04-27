@@ -123,6 +123,20 @@ class Assets implements AssetsInterface
     }
 
     /**
+     * @param string $position
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function assertScriptPositionExists($position)
+    {
+        if (!in_array($position, self::$allowedScriptPositions)) {
+            throw new \InvalidArgumentException('Position `' . $position . '` for scripts includes is not exists');
+        }
+    }
+
+    /**
      * @param AssetsInterface $otherAssets
      *
      * @return void
@@ -156,11 +170,7 @@ class Assets implements AssetsInterface
      */
     public function addStyleSheet($src, array $attributes = [], $weight = self::WEIGHT_DEFAULT)
     {
-        $this->styleSheets[$this->generateUniqueAssetKey($src)] = [
-            self::KEY_SRC        => $src,
-            self::KEY_ATTRIBUTES => $attributes,
-            self::KEY_WEIGHT     => $weight,
-        ];
+        $this->styleSheets[$this->generateUniqueAssetKey($src)] = $this->formatAsset($src, $attributes, $weight);
         return $this;
     }
 
@@ -172,6 +182,22 @@ class Assets implements AssetsInterface
     protected function generateUniqueAssetKey($src)
     {
         return trim($src);
+    }
+
+    /**
+     * @param string $src
+     * @param array  $attributes
+     * @param int    $weight
+     *
+     * @return array
+     */
+    protected function formatAsset($src, array $attributes, $weight)
+    {
+        return [
+            self::KEY_SRC        => $src,
+            self::KEY_ATTRIBUTES => $attributes,
+            self::KEY_WEIGHT     => $weight,
+        ];
     }
 
     /**
@@ -200,27 +226,8 @@ class Assets implements AssetsInterface
     public function addScript($position, $src, array $attributes = [], $weight = self::WEIGHT_DEFAULT)
     {
         $this->assertScriptPositionExists($position);
-        $this->scripts[$position][$this->generateUniqueAssetKey($src)] = [
-            self::KEY_SRC        => $src,
-            self::KEY_ATTRIBUTES => $attributes,
-            self::KEY_WEIGHT     => $weight,
-        ];
-
+        $this->scripts[$position][$this->generateUniqueAssetKey($src)] = $this->formatAsset($src, $attributes, $weight);
         return $this;
-    }
-
-    /**
-     * @param string $position
-     *
-     * @return void
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function assertScriptPositionExists($position)
-    {
-        if (!in_array($position, self::$allowedScriptPositions)) {
-            throw new \InvalidArgumentException('Position `' . $position . '` for scripts includes is not exists');
-        }
     }
 
 }

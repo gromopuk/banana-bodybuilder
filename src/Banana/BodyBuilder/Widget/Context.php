@@ -39,7 +39,7 @@ class Context implements ContextInterface
      * @param int|float|string|bool|array|null|\ArrayAccess|\Iterator|callable $value Value of supported type
      *                                                                                or callable
      *
-     * @return ContextInterface Current scope instance to use as Fluent interface
+     * @return $this Current scope instance to use as Fluent interface
      *
      * @throws \InvalidArgumentException If unsupported value type is given
      */
@@ -182,10 +182,15 @@ class Context implements ContextInterface
     /**
      * Returns parent context instance or null if parent context is not exists
      *
-     * @return ContextInterface|null
+     * @return ContextInterface
+     *
+     * @throws \RuntimeException If instance does`t have parent
      */
     public function getParent()
     {
+        if ($this->parent === null) {
+            throw new \RuntimeException('Context does`t have parent');
+        }
         return $this->parent;
     }
 

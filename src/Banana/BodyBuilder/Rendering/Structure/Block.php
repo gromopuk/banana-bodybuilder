@@ -130,7 +130,7 @@ class Block implements BlockInterface
     {
         $array = $this->getVariables();
         foreach ($this->getBlocks() as $blockName => $blocks) {
-            /** @var Block $block */
+            /** @var Block[] $blocks */
             foreach ($blocks as $block) {
                 $array[$blockName][] = $block->toArray();
             }

@@ -54,7 +54,7 @@ class BodyBuilder
     }
 
     /**
-     * @return EngineInterface
+     * @return EngineInterface|null
      */
     public function getRenderingEngine()
     {

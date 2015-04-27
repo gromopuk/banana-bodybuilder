@@ -39,7 +39,7 @@ abstract class WidgetAbstract implements WidgetInterface
     protected $elementsFactory;
 
     /**
-     * @return AssetsInterface|null
+     * @return AssetsInterface
      */
     public function getAssets()
     {
@@ -88,7 +88,7 @@ abstract class WidgetAbstract implements WidgetInterface
     }
 
     /**
-     * @return \Banana\BodyBuilder\Rendering\Structure\LayoutInterface
+     * @return Rendering\Structure\Layout
      */
     public function getLayout()
     {
@@ -98,7 +98,7 @@ abstract class WidgetAbstract implements WidgetInterface
     }
 
     /**
-     * @return \Banana\BodyBuilder\Rendering\Structure\LayoutInterface
+     * @return Rendering\Structure\Layout
      */
     protected function createLayout()
     {
@@ -111,7 +111,7 @@ abstract class WidgetAbstract implements WidgetInterface
     abstract protected function getTemplateName();
 
     /**
-     * @param \Banana\BodyBuilder\Rendering\Structure\LayoutInterface $layout
+     * @param Rendering\Structure\LayoutInterface $layout
      *
      * @return void
      */
@@ -121,23 +121,11 @@ abstract class WidgetAbstract implements WidgetInterface
     }
 
     /**
-     * @param \Banana\BodyBuilder\Rendering\Structure\BlockInterface $block
+     * @param Rendering\Structure\BlockInterface $block
      *
      * @return void
      */
     abstract protected function buildBlock(Rendering\Structure\BlockInterface $block);
-
-    /**
-     * @param string $type
-     * @param array  $attributes
-     * @param string $content
-     *
-     * @return Elements\ElementInterface
-     */
-    public function createElement($type, array $attributes = [], $content = '')
-    {
-        return $this->getElementsFactory()->createElement($type, $attributes, $content);
-    }
 
     /**
      * @return Elements\FactoryInterface

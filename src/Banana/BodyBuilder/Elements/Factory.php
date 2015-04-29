@@ -108,7 +108,7 @@ class Factory implements FactoryInterface
      */
     protected function assertElementClassCorrect($class)
     {
-        if (in_array(ElementInterface::class, class_implements($class))) {
+        if (!in_array(ElementInterface::class, class_implements($class))) {
             throw new \InvalidArgumentException('Element ' . $class . ' must implements ' . ElementInterface::class);
         }
     }

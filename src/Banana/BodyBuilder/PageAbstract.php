@@ -37,7 +37,19 @@ abstract class PageAbstract extends WidgetsGroupAbstract
      */
     public function setTitle($title)
     {
-        return $this->setTitleElement($this->createElement(ElementAbstract::TYPE_TITLE, [], $title));
+        return $this->getTitleElement()->setContent($title);
+    }
+
+    /**
+     * @return ElementInterface
+     */
+    public function getTitleElement()
+    {
+        if ($this->title === null) {
+            $this->title = $this->getElementsFactory()->createElement(ElementAbstract::TYPE_TITLE, [],
+                static::PAGE_TITLE_DEFAULT);
+        }
+        return $this->title;
     }
 
     /**
@@ -58,7 +70,8 @@ abstract class PageAbstract extends WidgetsGroupAbstract
      */
     public function addMeta(array $attributes)
     {
-        return $this->addMetaElement($this->createElement(ElementAbstract::TYPE_META, $attributes));
+        return $this->addMetaElement($this->getElementsFactory()->createElement(ElementAbstract::TYPE_META,
+            $attributes));
     }
 
     /**
@@ -73,7 +86,7 @@ abstract class PageAbstract extends WidgetsGroupAbstract
     }
 
     /**
-     * @param \Banana\BodyBuilder\Rendering\Structure\BlockInterface $block
+     * @param Rendering\Structure\BlockInterface $block
      *
      * @return void
      */
@@ -84,7 +97,7 @@ abstract class PageAbstract extends WidgetsGroupAbstract
     }
 
     /**
-     * @param \Banana\BodyBuilder\Rendering\Structure\BlockInterface $block
+     * @param Rendering\Structure\BlockInterface $block
      *
      * @return $this
      */
@@ -106,7 +119,7 @@ abstract class PageAbstract extends WidgetsGroupAbstract
     }
 
     /**
-     * @param \Banana\BodyBuilder\Rendering\Structure\BlockInterface $block
+     * @param Rendering\Structure\BlockInterface $block
      *
      * @return $this
      */
@@ -114,17 +127,6 @@ abstract class PageAbstract extends WidgetsGroupAbstract
     {
         $block->setVariable('title', $this->getTitleElement()->toString());
         return $this;
-    }
-
-    /**
-     * @return ElementInterface
-     */
-    public function getTitleElement()
-    {
-        if ($this->title === null) {
-            $this->title = $this->createElement(ElementAbstract::TYPE_TITLE, [], static::PAGE_TITLE_DEFAULT);
-        }
-        return $this->title;
     }
 
 }
